@@ -1,0 +1,78 @@
+﻿@model FSD_Helpderly.Models.Register
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="">
+
+        <title>Register</title>
+        <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+        <!--<script src="js\Scripts.js" defer></script>        Call in JavaScript"-->
+
+    </head>
+<h1 class="PageTitle">Register</h1>
+
+<hr />
+<form asp-action="Index">
+    <fieldset class="FormContent">
+        <div class="form-group row">
+            <label asp-for="VolunteerName" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="VolunteerName" class="form-control" id="VolunteerName" />
+                <span asp-validation-for="VolunteerName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Nationality" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="Nationality" class="form-control" id="Nationality" />
+                <span asp-validation-for="Nationality" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="BirthDate" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="BirthDate" class="form-control" id="BirthDate" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="TelNo" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="TelNo" class="form-control" id="TelNo" />
+                <span asp-validation-for="TelNo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="EmailAddr" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="EmailAddr" class="form-control" id="EmailAddr" />
+                <span asp-validation-for="EmailAddr" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Password" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="Password" class="form-control" id="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+        <span style="color:red;">@TempData["Message"]</span>
+    </fieldset>
+</form>
+<script>
+    //Maximum birthDate is today
+    birthdateId = document.getElementById("BirthDateID")
+    birthdateId.max = new Date().toISOString().split("T")[0];
+</script>

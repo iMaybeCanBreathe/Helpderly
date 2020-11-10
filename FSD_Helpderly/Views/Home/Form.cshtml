@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Form";
+}
+<script>
+    window.addEventListener("load", function () {
+        var now = new Date();
+        var utcString = now.toISOString().substring(0, 19);
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours();
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        var localDatetime = year + "-" +
+            (month < 10 ? "0" + month.toString() : month) + "-" +
+            (day < 10 ? "0" + day.toString() : day) + "T" +
+            (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+            (minute < 10 ? "0" + minute.toString() : minute) +
+            utcString.substring(16, 19);
+        var startTimeField = document.getElementById("startTime");
+        var endTimeField = document.getElementById("endTime");
+        startTimeField.value = localDatetime;
+        endTimeField.value = localDatetime;
+    });
+</script>
+<head>
+    <link href="~/css/ElderlyForm.css" rel="stylesheet" />
+</head>
+<div class="container">
+    <form id="helpForm" action=" " method="post">
+        <h3>Elderly Help Form</h3>
+        <fieldset>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" required autofocus>
+        </fieldset>
+        <fieldset>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" required>
+        </fieldset>
+        <fieldset>
+            <label for="location">Location</label>
+            <input type="text" id="location" required>
+        </fieldset>
+        <fieldset>
+            <label for="description">Description</label>
+            <input type="text" id="description" required>
+        </fieldset>
+        <fieldset>
+            <label for="mobileNumber">Mobile Number</label>
+            <input type="number" id="mobileNumber" required>
+        </fieldset>
+        <fieldset>
+            <label for="startTime">Start Time</label>
+            <input type="datetime-local" id="startTime" required>
+        </fieldset>
+        <fieldset>
+            <label for="endTime">End Time</label>
+            <input type="datetime-local" id="endTime">
+        </fieldset>
+        <fieldset>
+            <label for="additionalInfo">Additional Info</label>
+            <input type="text" id="additionalInfo">
+        </fieldset>
+        <fieldset>
+            <button name="submit" type="submit" id="submit">Submit</button>
+        </fieldset>
+    </form>
+</div>
