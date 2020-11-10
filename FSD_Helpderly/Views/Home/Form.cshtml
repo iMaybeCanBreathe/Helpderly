@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Form";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Elderly Form</p>
+<div class="container">
+    <form id="helpForm" action=" " method="post">
+        <h3>Elderly Help Form</h3>
+        <fieldset>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" required autofocus>
+        </fieldset>
+        <fieldset>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" required>
+        </fieldset>
+        <fieldset>
+            <label for="location">Location</label>
+            <input type="text" id="location" required>
+        </fieldset>
+        <fieldset>
+            <label for="description">Description</label>
+            <input type="text" id="description" required>
+        </fieldset>
+        <fieldset>
+            <label for="mobileNumber">Mobile Number</label>
+            <input type="number" id="mobileNumber" required>
+        </fieldset>
+        <fieldset>
+            <label for="startTime">Start Time</label>
+            <input type="datetime-local" id="startTime" required>
+        </fieldset>
+        <fieldset>
+            <label for="endTime">End Time</label>
+            <input type="datetime-local" id="dateTime">
+        </fieldset>
+        <fieldset>
+            <label for="additionalInfo">Additional Info</label>
+            <input placeholder="Additional Info" type="text" id="additionalInfo">
+        </fieldset>
+        <fieldset>
+            <button name="submit" type="submit" id="submit">Submit</button>
+        </fieldset>
+
+
+        <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+
+        <script>
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            var firebaseConfig = {
+                apiKey: "AIzaSyAWZO-WxgYWZrI93XKpTo3PFgUsbHG-sjs",
+                authDomain: "helpderly.firebaseapp.com",
+                databaseURL: "https://helpderly.firebaseio.com",
+                projectId: "helpderly",
+                storageBucket: "helpderly.appspot.com",
+                messagingSenderId: "366873829966",
+                appId: "1:366873829966:web:57cdfeb7398a834d2c991f",
+                measurementId: "G-PB4WLNFCJT"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        </script>
+
+
+        <script src="C:\Users\Elvan\source\repos\Helpderly\FSD_Helpderly\Javascript\ElderlyForm.js"></script>
+    </form>
+
+    
+</div>
