@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FSD_Helpderly.Models;
+using FSD_Helpderly.DAL;
 
 namespace FSD_Helpderly.Controllers
 {
