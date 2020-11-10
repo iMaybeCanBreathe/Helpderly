@@ -23,6 +23,10 @@ namespace FSD_Helpderly.Controllers
             return View();
         }
 
+        public IActionResult VolunteerViewPost()
+        {
+            return View();
+        }
         public IActionResult Form()
         {
             return View();
