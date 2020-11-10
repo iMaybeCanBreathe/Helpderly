@@ -1,9 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Form";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Elderly Main Form</p>
+<head>
+    <link href="~/css/ElderlyForm.css" rel="stylesheet" />
+</head>
 <div class="container">
     <form id="helpForm" action=" " method="post">
         <h3>Elderly Help Form</h3>
@@ -37,7 +38,7 @@
         </fieldset>
         <fieldset>
             <label for="additionalInfo">Additional Info</label>
-            <input placeholder="Additional Info" type="text" id="additionalInfo">
+            <input type="text" id="additionalInfo">
         </fieldset>
         <fieldset>
             <button name="submit" type="submit" id="submit">Submit</button>
