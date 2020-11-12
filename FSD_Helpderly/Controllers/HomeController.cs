@@ -7,13 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FSD_Helpderly.Models;
 using FSD_Helpderly.DAL;
+using Google.Type;
+using Google.Cloud.Firestore.V1;
+using Google.Cloud.Firestore;
 
 namespace FSD_Helpderly.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
