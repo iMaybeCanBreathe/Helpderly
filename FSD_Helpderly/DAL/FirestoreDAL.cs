@@ -63,7 +63,7 @@ namespace FSD_Helpderly.DAL
         //                              /
         /*******************************/
 
-        //Returns: A Dictionary where Key is the document ID, and value is another dictionary which 
+        //Returns: A Dictionary where Key is the document ID, and value is ElderlyPost object which 
         //         has the keys [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
         async public Task<Dictionary<string, ElderlyPost>> GetAllForms()
         {
