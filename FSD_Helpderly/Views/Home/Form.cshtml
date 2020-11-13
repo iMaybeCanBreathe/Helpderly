@@ -34,43 +34,43 @@
         <h3>Elderly Help Form</h3>
         <fieldset>
             <label asp-for="FirstName"></label>
-            <input type="text" id="firstName" required autofocus>
+            <input asp-for="FirstName" type="text" id="firstName" required autofocus>
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </fieldset>
         <fieldset>
             <label asp-for="LastName"></label>
-            <input type="text" id="lastName" required>
+            <input asp-for="LastName" type="text" id="lastName" required>
             <span asp-validation-for="LastName" class="text-danger"></span>
         </fieldset>
         <fieldset>
             <label asp-for="Location"></label>
-            <input type="text" id="location" required>
+            <input asp-for="Location" type="text" id="location" required>
             <span asp-validation-for="Location" class="text-danger"></span>
         </fieldset>
         <fieldset>
             <label asp-for="Description"></label>
-            <input type="text" id="description" required>
+            <input asp-for="Description" type="text" id="description" required>
             <span asp-validation-for="Description" class="text-danger"></span>
         </fieldset>
         <fieldset>
             <label asp-for="MobileNumber"></label>
-            <input type="number" id="mobileNumber" required>
+            <input asp-for="MobileNumber" type="number" id="mobileNumber" required>
             <span asp-validation-for="MobileNumber" class="text-danger"></span>
         </fieldset>
         <fieldset>
             <label asp-for="StartTime"></label>
-            <input type="datetime-local" id="startTime" required>
+            <input asp-for="StartTime" type="datetime-local" id="startTime" required>
             <span asp-validation-for="StartTime" class="text-danger"></span>
         </fieldset>
         <fieldset>
-            <label asp-for="EOT"></label>
-            <input type="datetime-local" id="endTime">
-            <span asp-validation-for="EOT" class="text-danger"></span>
+            <label asp-for="EndTime"></label>
+            <input asp-for="EndTime" type="datetime-local" id="endTime">
+            <span asp-validation-for="EndTime" class="text-danger"></span>
 
         </fieldset>
         <fieldset>
             <label asp-for="AdditionalInfo"></label>
-            <input type="text" id="additionalInfo">
+            <input asp-for="AdditionalInfo" type="text" id="additionalInfo">
             <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
 
         </fieldset>
