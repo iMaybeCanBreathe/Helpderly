@@ -10,13 +10,14 @@ using FSD_Helpderly.DAL;
 using Google.Type;
 using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
+using System.Drawing.Printing;
 
 namespace FSD_Helpderly.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private FirestoreDAL fDal = new FirestoreDAL();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -25,9 +26,16 @@ namespace FSD_Helpderly.Controllers
         {
             return View();
         }
-        public IActionResult VolunteerViewPost()
+        async public Task<IActionResult> VolunteerViewPost()
         {
-            return View();
+            Dictionary<string, ElderlyPost> forms = await fDal.GetAllForms();
+            List<ElderlyPost> elderlyPostList = new List<ElderlyPost>();
+            foreach (KeyValuePair<string, ElderlyPost> form in forms)
+            {
+                System.Diagnostics.Debug.WriteLine(form.Key);
+                elderlyPostList.Add(form.Value);
+            }
+            return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
         public IActionResult Form()
         {
