@@ -16,7 +16,6 @@ namespace FSD_Helpderly.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private FirestoreDAL fDAL = new FirestoreDAL();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -24,12 +23,6 @@ namespace FSD_Helpderly.Controllers
 
         async public Task<IActionResult> Index()
         {
-            Dictionary<string, ElderlyPost> forms = await fDAL.GetAllForms();
-            foreach (KeyValuePair<string, ElderlyPost> form in forms)
-            {
-                System.Diagnostics.Debug.Write(form.Key + ": ");
-                System.Diagnostics.Debug.WriteLine(form.Value.Description);
-            }
             return View();
         }
 
