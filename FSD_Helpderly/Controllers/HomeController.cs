@@ -42,6 +42,24 @@ namespace FSD_Helpderly.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Form(ElderlyPost elderlyPost)
+        {
+            if (ModelState.IsValid)
+            {
+                fDal.AddForm(elderlyPost.AdditionalInfo, elderlyPost.Description, elderlyPost.Email, elderlyPost.EndTime, elderlyPost.FirstName, elderlyPost.LastName, elderlyPost.Location, elderlyPost.MobileNumber, elderlyPost.StartTime);
+                return RedirectToAction("Index");
+            }
+
+            else
+            {
+                return View("Form", elderlyPost);
+            }
+        }
+        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
