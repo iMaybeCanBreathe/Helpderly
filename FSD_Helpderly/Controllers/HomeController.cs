@@ -21,12 +21,10 @@ namespace FSD_Helpderly.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View();
         }
-
         public IActionResult VolunteerViewPost()
         {
             return View();
