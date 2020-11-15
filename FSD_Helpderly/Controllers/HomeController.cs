@@ -11,6 +11,7 @@ using Google.Type;
 using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
+using Microsoft.AspNetCore.Http;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -65,5 +66,20 @@ namespace FSD_Helpderly.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(IFormCollection formData)
+        {
+            string loginID = formData["txtLoginID"].ToString().ToLower();
+            string password = formData["Password"].ToString();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
