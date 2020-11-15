@@ -43,6 +43,22 @@ namespace FSD_Helpderly.DAL
             return volunteer;
         }
 
+        //Returns an empty string "" if email not found
+        async public Task<string> GetVolunteerPassword(string email)
+        {
+            string password = "";
+
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> volunteer = snap.ToDictionary();
+                password = (string) volunteer["password"];
+            }
+
+            return password;
+        }
+
         async public void AddVolunteer(string email, string firstName, string lastName, string password)
         {
             DocumentReference doc = db.Collection("users").Document(email);
@@ -55,6 +71,28 @@ namespace FSD_Helpderly.DAL
             };
 
             await doc.SetAsync(volunteer);
+        }
+
+        /*******************************/
+        //                              /
+        //        Organisation          /
+        //                              /
+        /*******************************/
+
+        //Returns an empty string "" if email not found
+        async public Task<string> GetOrgPassword(string email)
+        {
+            string password = "";
+
+            DocumentReference doc = db.Collection("organizationUsers").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> org = snap.ToDictionary();
+                password = (string)org["password"];
+            }
+
+            return password;
         }
 
         /*******************************/
