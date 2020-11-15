@@ -3,22 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using FSD_Helpderly.DAL;
 using FSD_Helpderly.Models;
-using FireSharp.Interfaces;
-using FireSharp.Config;
-using FireSharp.Response;
 
 namespace FSD_Helpderly.Controllers
 {
     public class RegisterController : Controller
     {
-        IFirebaseConfig config = new FirebaseConfig
-        {
-            AuthSecret = "Ww0yJFX2CoMWcN7Bf8HqDQwTyICVYzVrL4W83Dm3",
-            BasePath = "https://helpderly.firebaseio.com/"
-
-        };
-        IFirebaseClient client;
+        private FirestoreDAL fDal = new FirestoreDAL();
         // GET: Register/Index
         public IActionResult Index()
         {
@@ -33,7 +25,7 @@ namespace FSD_Helpderly.Controllers
             if (ModelState.IsValid)
             {
                 //Add volunteer record to database
-                AddVolunteerToFirebase(register);
+                fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
                 TempData["Message"] = "Your Account have been successfully created!";
                 return RedirectToAction("Index");
             }
@@ -42,14 +34,6 @@ namespace FSD_Helpderly.Controllers
                 //Input validation fails, return to the register view to display error message
                 return View(register);
             }
-        }
-        private void AddVolunteerToFirebase(Register register)
-        {
-            client = new FireSharp.FirebaseClient(config);
-            var data = register;
-            PushResponse response = client.Push("Volunteers/", data);
-            data.VolunteerID = response.Result.name;
-            SetResponse setResponse = client.Set("Volunteers/" + data.VolunteerID, data);
         }
     }
 }

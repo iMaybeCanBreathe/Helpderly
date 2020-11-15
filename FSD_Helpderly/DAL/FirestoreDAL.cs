@@ -7,6 +7,7 @@ using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
 using Google.Type;
 using Microsoft.VisualBasic;
+using DateTime = System.DateTime;
 
 namespace FSD_Helpderly.DAL
 { 
@@ -53,21 +54,22 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 Dictionary<string, object> volunteer = snap.ToDictionary();
-                password = (string) volunteer["password"];
+                password = (string) volunteer["Password"];
             }
 
             return password;
         }
 
-        async public void AddVolunteer(string email, string firstName, string lastName, string password)
+        async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
         {
             DocumentReference doc = db.Collection("users").Document(email);
 
             Dictionary<string, object> volunteer = new Dictionary<string, object>()
             {
-                {"firstName", firstName},
-                {"lastName", lastName},
-                {"password", password},
+                {"VolunteerName", VolunteerName},
+                {"Nationality", Nationality},
+                {"TelNo", TelNo},
+                {"Password", password}
             };
 
             await doc.SetAsync(volunteer);

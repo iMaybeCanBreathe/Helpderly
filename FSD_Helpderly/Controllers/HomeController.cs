@@ -25,8 +25,8 @@ namespace FSD_Helpderly.Controllers
         }
         async public Task<IActionResult> Index()
         {
-            string pass = await fDal.GetVolunteerPassword("notyumin@gmail.com");
-            System.Diagnostics.Debug.WriteLine(pass);
+            //string pass = await fDal.GetVolunteerPassword("notyumin@gmail.com");
+            //System.Diagnostics.Debug.WriteLine(pass);
             return View();
         }
         async public Task<IActionResult> VolunteerViewPost()
