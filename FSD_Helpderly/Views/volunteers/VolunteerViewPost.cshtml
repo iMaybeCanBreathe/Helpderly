@@ -1,67 +1,54 @@
-﻿@model IEnumerable<FSD_Helpderly.Models.ElderlyPost>
+﻿<div>
+    @model IEnumerable<FSD_Helpderly.Models.ElderlyPost>
 
-@if (Model.ToList().Count > 0)
-{
     <head>
         <link rel="stylesheet" href="~/css/Package3.css" />
     </head>
     <div class="table-responsive">
         <div class="search">
             <form asp-action="VolunteerViewPost" method="post">
-                <b>Search By FullName:</b>
-                <input type="text" id="Staffname" name="Staffname" required>
+                <b>Filer By region:</b>
                 <input type="submit" value="filter" />
             </form>
 
-            @{
-                if (ViewBag.SearchKey != null)
-                {
 
-                    @*@ViewBag.SearchKey*@
-
-                }
-            }
+            <table id="viewStaff" class="table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>AdditionalInfo</th>
+                        <th>Description</th>
+                        <th>Email</th>
+                        <th>EndTime <br />
+                        <th>Location</th>
+                        <th>Mobile Number</th>
+                        <th>Name</th>
+                        <th>Quantity Volunteer</th>
+                        <th>Region</th>
+                        <th>Start Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.AdditionalInfo</td>
+                            <td>@item.Description</td>
+                            <td>@item.Email</td>
+                            <td>@item.EndTime</td>
+                            <td>@item.Location</td>
+                            <td>@item.MobileNumber</td>
+                            <td>@item.Name</td>
+                            <td>@item.QuantityVolunteer</td>
+                            <td>@item.Region</td>
+                            <td>@item.StartTime</td>
+                            <td>
+                                <a asp-action="ViewPostDetails" asp-controller="Home"
+                                   asp-route-id="@item.FormID">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-        <table id="viewStaff" class="table-striped table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>AdditionalInfo</th>
-                    <th>Description</th>
-                    <th>Email</th>
-                    <th>EndTime <br />
-                    <th>Location</th>
-                    <th>Mobile Number</th>
-                    <th>Name</th>
-                    <th>Quantity Volunteer</th>
-                    <th>Region</th>
-                    <th>Start Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                <tr>
-                    <td>@item.AdditionalInfo</td>
-                    <td>@item.Description</td>
-                    <td>@item.Email</td>
-                    <td>@item.EndTime</td>
-                    <td>@item.Location</td>
-                    <td>@item.MobileNumber</td>
-                    <td>@item.Name</td>
-                    <td>@item.QuantityVolunteer</td>
-                    <td>@item.Region</td>
-                    <td>@item.StartTime</td>
-                    <td>
-                        <a asp-action="ViewPostDetails" asp-controller="Home"
-                           asp-route-id="@item.FormID">View</a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
     </div>
-}
-else
-{
-    <span style="color:red">No record found!</span>
-}
+    </div>
