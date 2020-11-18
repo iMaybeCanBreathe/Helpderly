@@ -32,6 +32,11 @@ namespace FSD_Helpderly.Controllers
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
+        public AcceptedResult Accept(string iid)
+        {
+
+        }
+
         public IActionResult Form()
         {
             return View();
@@ -55,7 +60,6 @@ namespace FSD_Helpderly.Controllers
                 return View("Form", elderlyPost);
             }
         }
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
