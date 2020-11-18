@@ -12,10 +12,7 @@ namespace FSD_Helpderly.Models
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current Password")]
-        [Compare("DatabasePassword", ErrorMessage = "The Current Password do not match.")]
         public string Password { get; set; }
-
-        public string DatabasePassword { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
