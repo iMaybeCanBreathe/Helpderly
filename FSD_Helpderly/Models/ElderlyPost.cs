@@ -27,7 +27,7 @@ namespace FSD_Helpderly.Models
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Name")]
         [StringLength(50, ErrorMessage = "Your name is too long")]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Location")]
@@ -41,7 +41,7 @@ namespace FSD_Helpderly.Models
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Quantity")]
-        public int quantityVolunteer { get; set; }
+        public int QuantityVolunteer { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Start Time")]
