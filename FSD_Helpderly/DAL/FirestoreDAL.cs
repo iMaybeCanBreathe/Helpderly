@@ -103,11 +103,11 @@ namespace FSD_Helpderly.DAL
         //                              /
         /*******************************/
 
-        //Returns: A Dictionary where Key is the document ID, and value is ElderlyPost object which 
-        //         has the keys [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
-        async public Task<Dictionary<string, ElderlyPost>> GetAllForms()
+        //Returns: An ElderlyPost object which 
+        //         has the properties [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
+        async public Task<List<ElderlyPost>> GetAllForms()
         {
-            Dictionary<string, ElderlyPost> forms = new Dictionary<string, ElderlyPost>();
+            List<ElderlyPost> forms = new List<ElderlyPost>();
 
             CollectionReference coll = db.Collection("forms");
             QuerySnapshot snap = await coll.GetSnapshotAsync();
@@ -133,6 +133,7 @@ namespace FSD_Helpderly.DAL
 
                 ElderlyPost elderlyPost = new ElderlyPost()
                 {
+                    FormId = doc.Id,
                     AdditionalInfo = (string)doc.ToDictionary()["additionalInfo"],
                     Description = (string)doc.ToDictionary()["description"],
                     Email = (string)doc.ToDictionary()["email"],
@@ -142,7 +143,7 @@ namespace FSD_Helpderly.DAL
                     MobileNumber = (string)doc.ToDictionary()["mobileNumber"],
                     StartTime = convertedStartTime,
                 };
-                forms.Add(doc.Id, elderlyPost);
+                forms.Add(elderlyPost);
             }
 
             return forms;
