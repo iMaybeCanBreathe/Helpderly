@@ -27,7 +27,7 @@ namespace FSD_Helpderly.Controllers
         {
             return View();
         }
-        async public Task<IActionResult> VolunteerViewPost()
+        async public Task<IActionResult> ViewAllPosts()
         {
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
@@ -41,15 +41,15 @@ namespace FSD_Helpderly.Controllers
 
         async public Task<IActionResult> SelectedViewPost()
         {
-            List<object> SelectedFormId = await fDal.GetVolunteerForms("BBean@yahoo.com");
-            List<ElderlyPost> selectedform = new List<ElderlyPost>();
-            foreach (string formid in SelectedFormId)
+            List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");
+            List<ElderlyPost> selectedForms = new List<ElderlyPost>();
+            foreach (string formid in selectedFormIds)
             {
-              ElderlyPost form = await fDal.GetForm(formid);
-                selectedform.Add(form);
+                ElderlyPost form = await fDal.GetForm(formid);
+                selectedForms.Add(form);
             }
 
-            return View("../Volunteers/SelectedViewPost",selectedform);
+            return View("../Volunteers/SelectedViewPost", selectedForms);
         }
 
         public IActionResult Form()
