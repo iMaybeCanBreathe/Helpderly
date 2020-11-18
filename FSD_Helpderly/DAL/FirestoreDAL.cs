@@ -148,22 +148,21 @@ namespace FSD_Helpderly.DAL
             return forms;
         }
 
-        async public void AddForm(string additionalInfo, string description, string email, 
-            System.DateTime? endTime, string name, string location, string mobileNumber, int quantityVolunteer, System.DateTime startTime)
+        async public void AddForm(ElderlyPost ePost)
         {
             CollectionReference coll = db.Collection("forms");
 
             Dictionary<string, object> form = new Dictionary<string, object>()
             {
-                { "additionalInfo", additionalInfo },
-                { "description", description },
-                { "email", email },
-                { "endTime", endTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(endTime), DateTimeKind.Utc)) },
-                { "name", name },
-                { "location", location },
-                { "mobileNumber", mobileNumber },
-                { "quantityVolunteer", quantityVolunteer },
-                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(startTime, DateTimeKind.Utc)) },
+                { "additionalInfo", ePost.AdditionalInfo },
+                { "description", ePost.Description },
+                { "email", ePost.Email },
+                { "endTime", ePost.EndTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(ePost.EndTime), DateTimeKind.Utc)) },
+                { "name", ePost.Name },
+                { "location", ePost.Location },
+                { "mobileNumber", ePost.MobileNumber },
+                { "quantityVolunteer", ePost.QuantityVolunteer },
+                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
             };
 
             await coll.AddAsync(form);
