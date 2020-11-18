@@ -137,7 +137,7 @@ namespace FSD_Helpderly.DAL
                     Description = (string)doc.ToDictionary()["description"],
                     Email = (string)doc.ToDictionary()["email"],
                     EndTime = convertedEndTIme,
-                    Name = (string)doc.ToDictionary()["firstName"],
+                    Name = (string)doc.ToDictionary()["name"],
                     Location = (string)doc.ToDictionary()["location"],
                     MobileNumber = (string)doc.ToDictionary()["mobileNumber"],
                     StartTime = convertedStartTime,
