@@ -32,9 +32,34 @@ namespace FSD_Helpderly.Controllers
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
-        //public AcceptedResult Accept(string iid)
-        //{
+       async public Task<IActionResult> Accept(string id)
+        {
+            ElderlyPost selectedpost = await fDal.GetForm(id);
+            return View("../Volunteers/Accept", selectedpost);            
+            
+            //ElderlyPost elderMap = formDetailMaptoAccept(elderpost);
+            //return View(elderMap);
 
+
+        }
+
+        //public ElderlyPost formDetailMaptoAccept(ElderlyPost elderpost)
+        //{
+        //    ElderlyPost formDetailMaptoAccept = new ElderlyPost
+        //    {
+        //        AdditionalInfo = elderpost.AdditionalInfo,
+        //        Description = elderpost.Description,
+        //        Email = elderpost.Email,
+        //        EndTime = elderpost.EndTime,
+        //        Location = elderpost.Location,
+        //        MobileNumber = elderpost.MobileNumber,
+        //        Name = elderpost.Name,
+        //        QuantityVolunteer = elderpost.QuantityVolunteer,
+        //        Region = elderpost.Region,
+        //        StartTime = elderpost.StartTime,
+
+        //    };
+        //    return formDetailMaptoAccept;
         //}
 
         public IActionResult Form()
