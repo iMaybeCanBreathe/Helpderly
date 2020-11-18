@@ -133,7 +133,7 @@ namespace FSD_Helpderly.DAL
 
                 ElderlyPost elderlyPost = new ElderlyPost()
                 {
-                    FormId = doc.Id,
+                    FormID = doc.Id,
                     AdditionalInfo = (string)doc.ToDictionary()["additionalInfo"],
                     Description = (string)doc.ToDictionary()["description"],
                     Email = (string)doc.ToDictionary()["email"],
