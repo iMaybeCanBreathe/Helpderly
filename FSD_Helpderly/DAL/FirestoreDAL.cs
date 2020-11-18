@@ -66,10 +66,10 @@ namespace FSD_Helpderly.DAL
 
             Dictionary<string, object> volunteer = new Dictionary<string, object>()
             {
-                {"VolunteerName", VolunteerName},
-                {"Nationality", Nationality},
-                {"TelNo", TelNo},
-                {"Password", password}
+                {"volunteerName", VolunteerName},
+                {"nationality", Nationality},
+                {"telNo", TelNo},
+                {"password", password}
             };
 
             await doc.SetAsync(volunteer);
@@ -137,8 +137,7 @@ namespace FSD_Helpderly.DAL
                     Description = (string)doc.ToDictionary()["description"],
                     Email = (string)doc.ToDictionary()["email"],
                     EndTime = convertedEndTIme,
-                    FirstName = (string)doc.ToDictionary()["firstName"],
-                    LastName = (string)doc.ToDictionary()["lastName"],
+                    Name = (string)doc.ToDictionary()["firstName"],
                     Location = (string)doc.ToDictionary()["location"],
                     MobileNumber = (string)doc.ToDictionary()["mobileNumber"],
                     StartTime = convertedStartTime,
@@ -150,7 +149,7 @@ namespace FSD_Helpderly.DAL
         }
 
         async public void AddForm(string additionalInfo, string description, string email, 
-            System.DateTime? endTime, string firstName, string lastname, string location, string mobileNumber, System.DateTime startTime)
+            System.DateTime? endTime, string name, string location, string mobileNumber, int quantityVolunteer, System.DateTime startTime)
         {
             CollectionReference coll = db.Collection("forms");
 
@@ -160,10 +159,10 @@ namespace FSD_Helpderly.DAL
                 { "description", description },
                 { "email", email },
                 { "endTime", endTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(endTime), DateTimeKind.Utc)) },
-                { "firstName", firstName },
-                { "lastName", lastname },
+                { "name", name },
                 { "location", location },
                 { "mobileNumber", mobileNumber },
+                { "quantityVolunteer", quantityVolunteer },
                 { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(startTime, DateTimeKind.Utc)) },
             };
 

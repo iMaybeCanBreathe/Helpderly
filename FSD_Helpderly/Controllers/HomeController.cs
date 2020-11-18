@@ -23,10 +23,8 @@ namespace FSD_Helpderly.Controllers
         {
             _logger = logger;
         }
-        async public Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            //string pass = await fDal.GetVolunteerPassword("notyumin@gmail.com");
-            //System.Diagnostics.Debug.WriteLine(pass);
             return View();
         }
         async public Task<IActionResult> VolunteerViewPost()
