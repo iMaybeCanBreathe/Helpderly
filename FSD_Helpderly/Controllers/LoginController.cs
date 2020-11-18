@@ -21,24 +21,23 @@ namespace FSD_Helpderly.Controllers
         // POST: Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(IFormCollection formData)
+        async public Task<ActionResult> Login(IFormCollection formData)
         {
             // Read inputs from textboxes             
             // Email address converted to lowercase
             string password = formData["Password"].ToString();
             string email = formData["txtEmail"].ToString();
 
-            if (email == null)
+            string dbPassword = await fDal.GetVolunteerPassword(email);
+            if (dbPassword == "")
             {
-                // Store an error message in TempData for display at the index view     
-                TempData["Message"] = "Email not found";
-                // Redirect user back to the index view through an action 
-                return View("Login");
+                dbPassword = await fDal.GetOrgPassword(email);
+                return RedirectToAction("VolunteerViewPost");
             }
-
-            else
+            if (dbPassword == "")
             {
-                return View("VolunteerViewPost");
+                TempData["Message"] = "Email not found";
+                return View("Login");
             }
         }
     }
