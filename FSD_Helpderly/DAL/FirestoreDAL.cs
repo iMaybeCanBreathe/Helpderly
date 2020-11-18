@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using FSD_Helpderly.Models;
@@ -104,6 +105,54 @@ namespace FSD_Helpderly.DAL
         /*******************************/
 
         //Returns: An ElderlyPost object which 
+        //         has the properties [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
+        async public Task<ElderlyPost> GetForm(string id)
+        {
+            DocumentReference doc = db.Collection("forms").Document(id);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            ElderlyPost elderlyPost = new ElderlyPost();
+
+            if (snap.Exists)
+            {
+                Dictionary<string, object> docDic = snap.ToDictionary();
+
+                //Convert endTime
+                Timestamp endTime;
+                System.DateTime? convertedEndTIme;
+                if (docDic["endTime"] != null)
+                {
+                    endTime = (Timestamp)docDic["endTime"];
+                    convertedEndTIme = endTime.ToDateTime();
+                }
+                else
+                {
+                    convertedEndTIme = null;
+                }
+
+                //Convert startTime
+                Timestamp startTime = (Timestamp)docDic["startTime"];
+                System.DateTime convertedStartTime = startTime.ToDateTime();
+
+                elderlyPost = new ElderlyPost()
+                {
+                    FormID = doc.Id,
+                    AdditionalInfo = (string)docDic["additionalInfo"],
+                    Description = (string)docDic["description"],
+                    Email = (string)docDic["email"],
+                    EndTime = convertedEndTIme,
+                    Name = (string)docDic["name"],
+                    Location = (string)docDic["location"],
+                    MobileNumber = (string)docDic["mobileNumber"],
+                    Region = (string)docDic["region"],
+                    StartTime = convertedStartTime,
+                };
+            }
+
+            return elderlyPost;
+        }
+
+        //Returns: A list of ElderlyPosts object which 
         //         has the properties [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
         async public Task<List<ElderlyPost>> GetAllForms()
         {
