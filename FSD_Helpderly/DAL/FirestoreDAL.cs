@@ -76,6 +76,24 @@ namespace FSD_Helpderly.DAL
             await doc.SetAsync(volunteer);
         }
 
+        //WIP: DO NOT USE THIS YET
+        async public void AddFormToVolunteer(string email, string formId)
+        {
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            
+
+            Dictionary<string, object> volunteer = new Dictionary<string, object>()
+            {
+                {"forms", formId},
+            };
+
+            if (snap.Exists)
+            {
+                await doc.UpdateAsync(volunteer);
+            }
+        }
+
         /*******************************/
         //                              /
         //        Organisation          /
