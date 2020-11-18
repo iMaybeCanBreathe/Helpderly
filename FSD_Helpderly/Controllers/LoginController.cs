@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using FSD_Helpderly.DAL;
 using FSD_Helpderly.Models;
 using Microsoft.AspNetCore.Http;
+using FSD_Helpderly.Controllers;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -28,16 +29,18 @@ namespace FSD_Helpderly.Controllers
             string password = formData["Password"].ToString();
             string email = formData["txtEmail"].ToString();
 
-            string dbPassword = await fDal.GetVolunteerPassword(email);
-            if (dbPassword == "")
-            {
-                dbPassword = await fDal.GetOrgPassword(email);
-                return RedirectToAction("VolunteerViewPost");
-            }
-            if (dbPassword == "")
+
+            string VolunteerPassword = await fDal.GetVolunteerPassword(email);
+            string OrgPassword = await fDal.GetOrgPassword(email);
+            if (VolunteerPassword == "" || OrgPassword == "")
             {
                 TempData["Message"] = "Email not found";
-                return View("Login");
+                return RedirectToAction("Login");
+            }
+
+            else
+            {
+                return RedirectToAction("VolunteerViewPost");
             }
         }
     }
