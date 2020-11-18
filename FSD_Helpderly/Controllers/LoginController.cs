@@ -34,7 +34,7 @@ namespace FSD_Helpderly.Controllers
                 dbPassword = await fDal.GetOrgPassword(email);
                 return RedirectToAction("VolunteerViewPost");
             }
-            if (dbPassword == "")
+            else
             {
                 TempData["Message"] = "Email not found";
                 return View("Login");
