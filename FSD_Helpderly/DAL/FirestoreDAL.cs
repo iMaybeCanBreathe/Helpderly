@@ -66,10 +66,10 @@ namespace FSD_Helpderly.DAL
 
             Dictionary<string, object> volunteer = new Dictionary<string, object>()
             {
-                {"VolunteerName", VolunteerName},
-                {"Nationality", Nationality},
-                {"TelNo", TelNo},
-                {"Password", password}
+                {"volunteerName", VolunteerName},
+                {"nationality", Nationality},
+                {"telNo", TelNo},
+                {"password", password}
             };
 
             await doc.SetAsync(volunteer);
