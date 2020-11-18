@@ -33,9 +33,9 @@
     <form id="helpForm" asp-action="Form" method="post">
         <h3>Elderly Help Form</h3>
         <fieldset>
-            <label asp-for="name"></label>
-            <input asp-for="name" type="text" id="name" required autofocus>
-            <span asp-validation-for="name" class="text-danger"></span>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" type="text" id="name" required autofocus>
+            <span asp-validation-for="Name" class="text-danger"></span>
         </fieldset>
         <fieldset>
             <label asp-for="Location"></label>
@@ -53,12 +53,12 @@
             <span asp-validation-for="MobileNumber" class="text-danger"></span>
         </fieldset>
         <fieldset>
-            <label asp-for="quantityVolunteer"></label>
-            <select asp-for="quantityVolunteer" type="number" id="quantityVolunteer">
+            <label asp-for="QuantityVolunteer"></label>
+            <select asp-for="QuantityVolunteer" type="number" id="quantityVolunteer">
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
-            <span asp-validation-for="quantityVolunteer" class="text-danger"></span>
+            <span asp-validation-for="QuantityVolunteer" class="text-danger"></span>
 
         </fieldset>
         <fieldset>
