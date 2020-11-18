@@ -59,7 +59,7 @@
         </fieldset>
         <fieldset>
             <label asp-for="QuantityVolunteer"></label>
-            <input asp-for="QuantityVolunteer" type="number" id="quantityVolunteer">
+            <input asp-for="QuantityVolunteer" type="number" id="quantityVolunteer" min="0" max="100" step="1"/>
             <span asp-validation-for="QuantityVolunteer" class="text-danger"></span>
 
         </fieldset>
