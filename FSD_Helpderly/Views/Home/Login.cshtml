@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WEB_Assignment.Models.LoginViewModel
+
+@{
     Layout = "/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Login";
 }
@@ -18,27 +20,25 @@
 <h1 class="PageTitle">Login</h1>
 
 <hr />
-<form asp-action="Login">
+<form asp-action="Login" method="post">
     <fieldset class="FormContent">
         <div class="form-group row">
-            <label for="txtLoginID">Email Address:</label>
-            <div class="col-sm-9 col-md-5">
-                <input type="email" name="txtEmail" id="txtEmail" required />
-            </div>
+            <label asp-for="EmailAddress" class="font-weight-bold control-label"></label>
+            <input asp-for="EmailAddress" class="form-control" />
+            <span asp-validation-for="EmailAddress" class="text-danger"></span>
         </div>
         <div class="form-group row">
-            <label for="Password">Password:</label>
-            <div class="col-sm-9 col-md-5">
-                <input type="password" name="Password" id="Password" style="width:100px" required />
-            </div>
+            <label asp-for="Password" class="font-weight-bold control-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="form-group row">
             <div class="col-sm-9 offset-sm-3">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </div>
-        <span style="color:red;">@TempData["Message"]</span>
+        <span class="text-danger">@Html.ValidationMessage("CustomError")</span>
     </fieldset>
-    <a class="nav-link" asp-controller="Register" asp-action="Index">Register As A Volunteer Now!!!</a>
+    <a class="nav-link" asp-controller="Register" asp-action="Index">Register As A Volunteer Now!</a>
 </form>
 

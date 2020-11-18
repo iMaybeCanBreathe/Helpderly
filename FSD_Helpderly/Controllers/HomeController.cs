@@ -12,6 +12,7 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
+using WEB_Assignment.Models;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -27,6 +28,76 @@ namespace FSD_Helpderly.Controllers
         {
             return View();
         }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        async public Task<ActionResult> Login(LoginViewModel login)
+        {
+            // Read inputs from textboxes             
+            // Email address converted to lowercase
+            string password = login.Password;
+            string email = login.EmailAddress;
+
+            string VolunteerPassword = await fDal.GetVolunteerPassword(email);
+
+            if (VolunteerPassword != "")
+            {
+                if (VolunteerPassword == password)
+                {
+                    //login to vclunteer
+
+                    //Store user role "Volunteer" as a string in session with the key "Role"
+                    HttpContext.Session.SetString("Role", "Volunteer");
+
+                    //Store user email string in session with the key "Email"
+                    HttpContext.Session.SetString("Email", email);
+
+                    return RedirectToAction("ViewAllPosts");
+                }
+                else
+                {
+                    ModelState.AddModelError("CustomError", "Incorrect password");
+                    return View(login);
+                }
+            }
+            else
+            {
+                //if email not found in volunteer, check in org
+                string OrgPassword = await fDal.GetOrgPassword(email);
+                if (OrgPassword != "")
+                {
+                    if (OrgPassword == password)
+                    {
+                        //login to organisation
+
+                        //StoreLocation user role "Organization" as a string in session with the key "Role"
+                        HttpContext.Session.SetString("Role", "Organization");
+
+                        //Store user email string in session with the key "Email"
+                        HttpContext.Session.SetString("Email", email);
+
+                        return RedirectToAction("ViewAllPosts");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CustomError", "Incorrect password");
+                        return View(login);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("CustomError", "Email not found");
+                    return View(login);
+                }
+            }
+        }
+
         async public Task<IActionResult> ViewAllPosts()
         {
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
@@ -37,19 +108,6 @@ namespace FSD_Helpderly.Controllers
             ElderlyPost selectedpost = await fDal.GetForm(id);
             System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
             return View("../Volunteers/ViewPostDetails", selectedpost);            
-        }
-
-        async public Task<IActionResult> SelectedViewPost()
-        {
-            List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");
-            List<ElderlyPost> selectedForms = new List<ElderlyPost>();
-            foreach (string formid in selectedFormIds)
-            {
-                ElderlyPost form = await fDal.GetForm(formid);
-                selectedForms.Add(form);
-            }
-
-            return View("../Volunteers/SelectedViewPost", selectedForms);
         }
 
         public IActionResult Form()
@@ -81,6 +139,5 @@ namespace FSD_Helpderly.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }
