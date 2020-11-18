@@ -69,19 +69,5 @@ namespace FSD_Helpderly.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(IFormCollection formData)
-        {
-            string loginID = formData["txtLoginID"].ToString().ToLower();
-            string password = formData["Password"].ToString();
-
-            return RedirectToAction("Index");
-        }
-
     }
 }
