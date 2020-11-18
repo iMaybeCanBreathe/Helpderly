@@ -32,10 +32,10 @@ namespace FSD_Helpderly.Controllers
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
-        public AcceptedResult Accept(string iid)
-        {
+        //public AcceptedResult Accept(string iid)
+        //{
 
-        }
+        //}
 
         public IActionResult Form()
         {
