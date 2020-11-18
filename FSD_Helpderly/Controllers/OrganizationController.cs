@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FSD_Helpderly.Controllers
+{
+    public class OrganizationController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Form()
+        {
+            return View();
+        }
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Form(ElderlyPost elderlyPost)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        fDal.AddForm(elderlyPost.AdditionalInfo, elderlyPost.Description, elderlyPost.Email, elderlyPost.EndTime, elderlyPost.FirstName, elderlyPost.LastName, elderlyPost.Location, elderlyPost.MobileNumber, elderlyPost.StartTime);
+        //        return View("FormTY");
+        //    }
+
+        //    else
+        //    {
+        //        return View("Form", elderlyPost);
+        //    }
+        //}
+    }
+}

@@ -23,10 +23,8 @@ namespace FSD_Helpderly.Controllers
         {
             _logger = logger;
         }
-        async public Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            //string pass = await fDal.GetVolunteerPassword("notyumin@gmail.com");
-            //System.Diagnostics.Debug.WriteLine(pass);
             return View();
         }
         async public Task<IActionResult> VolunteerViewPost()
@@ -52,7 +50,7 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
-                fDal.AddForm(elderlyPost.AdditionalInfo, elderlyPost.Description, elderlyPost.Email, elderlyPost.EndTime, elderlyPost.FirstName, elderlyPost.LastName, elderlyPost.Location, elderlyPost.MobileNumber, elderlyPost.StartTime);
+                fDal.AddForm(elderlyPost.AdditionalInfo, elderlyPost.Description, elderlyPost.Email, elderlyPost.EndTime, elderlyPost.Name, elderlyPost.Location, elderlyPost.MobileNumber, elderlyPost.QuantityVolunteer, elderlyPost.StartTime);
                 return View("FormTY");
             }
 

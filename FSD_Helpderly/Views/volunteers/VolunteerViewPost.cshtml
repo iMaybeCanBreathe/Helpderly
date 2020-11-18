@@ -27,11 +27,12 @@
                 <tr>
                     <th>AdditionalInfo</th>
                     <th>Description</th>
-                    <th>EndTime <br /> ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>EndTime <br />
                     <th>Location</th>
                     <th>Mobile Number</th>
+                    <th>Name</th>
+                    <th>Quantity Volunteer</th>
                     <th>Start Time</th>
                 </tr>
             </thead>
@@ -43,10 +44,10 @@
                     <td>@item.Description</td>
                     <td>@item.Email</td>
                     <td>@item.EndTime</td>
-                    <td>@item.FirstName</td>
-                    <td>@item.LastName</td>
                     <td>@item.Location</td>
                     <td>@item.MobileNumber</td>
+                    <td>@item.Name</td>
+                    <td>@item.QuantityVolunteer</td>
                     <td>@item.StartTime</td>
                     <td>
                         <a asp-action="Select" asp-controller="Staff"

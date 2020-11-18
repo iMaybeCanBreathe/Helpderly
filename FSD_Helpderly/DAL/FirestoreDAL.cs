@@ -137,8 +137,7 @@ namespace FSD_Helpderly.DAL
                     Description = (string)doc.ToDictionary()["description"],
                     Email = (string)doc.ToDictionary()["email"],
                     EndTime = convertedEndTIme,
-                    FirstName = (string)doc.ToDictionary()["firstName"],
-                    LastName = (string)doc.ToDictionary()["lastName"],
+                    Name = (string)doc.ToDictionary()["firstName"],
                     Location = (string)doc.ToDictionary()["location"],
                     MobileNumber = (string)doc.ToDictionary()["mobileNumber"],
                     StartTime = convertedStartTime,
@@ -149,22 +148,21 @@ namespace FSD_Helpderly.DAL
             return forms;
         }
 
-        async public void AddForm(string additionalInfo, string description, string email, 
-            System.DateTime? endTime, string firstName, string lastname, string location, string mobileNumber, System.DateTime startTime)
+        async public void AddForm(ElderlyPost ePost)
         {
             CollectionReference coll = db.Collection("forms");
 
             Dictionary<string, object> form = new Dictionary<string, object>()
             {
-                { "additionalInfo", additionalInfo },
-                { "description", description },
-                { "email", email },
-                { "endTime", endTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(endTime), DateTimeKind.Utc)) },
-                { "firstName", firstName },
-                { "lastName", lastname },
-                { "location", location },
-                { "mobileNumber", mobileNumber },
-                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(startTime, DateTimeKind.Utc)) },
+                { "additionalInfo", ePost.AdditionalInfo },
+                { "description", ePost.Description },
+                { "email", ePost.Email },
+                { "endTime", ePost.EndTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(ePost.EndTime), DateTimeKind.Utc)) },
+                { "name", ePost.Name },
+                { "location", ePost.Location },
+                { "mobileNumber", ePost.MobileNumber },
+                { "quantityVolunteer", ePost.QuantityVolunteer },
+                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
             };
 
             await coll.AddAsync(form);
