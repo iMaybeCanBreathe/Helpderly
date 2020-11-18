@@ -18,7 +18,7 @@
 //            return View();
 //        }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
         // POST: Login
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -41,9 +41,9 @@
         //        return View("Login");
         //    }
         //}
-    }
-}
-=======
+//    }
+//}
+// =======
 //        // POST: Login
 //        [HttpPost]
 //        [ValidateAntiForgeryToken]
@@ -68,4 +68,4 @@
 //        }
 //    }
 //}
->>>>>>> 850823427c796252bbe26bd93860bf20c93cba41
+//>>>>>>> 850823427c796252bbe26bd93860bf20c93cba41

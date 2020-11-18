@@ -21,8 +21,6 @@ namespace FSD_Helpderly.Models
         [Required]
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
         [Display(Name = "Email Address")]
-        // Custom Validation Attribute for checking email address exists
-        //[ValidateEmailExists]
         public string Email { get; set; }
 
         [Required]
