@@ -50,6 +50,8 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine(elderlyPost.StartTime.ToString());
+                System.Diagnostics.Debug.WriteLine(elderlyPost.EndTime.ToString());
                 fDal.AddForm(elderlyPost);
                 return View("FormTY");
             }

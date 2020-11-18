@@ -35,6 +35,11 @@ namespace FSD_Helpderly.Models
         public string Location { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
+        [Display(Name = "Region")]
+        [StringLength(50, ErrorMessage = "Your location is too long")]
+        public string Region { get; set; }
+
+        [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Mobile Number")]
         [StringLength(10, ErrorMessage = "Your number is too long")]
         public string MobileNumber { get; set; }
