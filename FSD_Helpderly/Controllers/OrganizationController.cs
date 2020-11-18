@@ -17,7 +17,6 @@ namespace FSD_Helpderly.Controllers
 {
     public class OrganizationController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private FirestoreDAL fDal = new FirestoreDAL();
         public IActionResult Index()
         {
