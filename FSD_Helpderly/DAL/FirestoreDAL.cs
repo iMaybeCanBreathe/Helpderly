@@ -61,26 +61,21 @@ namespace FSD_Helpderly.DAL
 
             return password;
         }
-        async public Task<string> GetVolunteerEmail(string email)
-        {
-            string emailFound = "";
-            DocumentReference doc = db.Collection("users").Document(email);
-            DocumentSnapshot snap = await doc.GetSnapshotAsync();
-            if (snap.Exists)
-            {
-                Dictionary<string, object> volunteer = snap.ToDictionary();
-                emailFound = (string)volunteer["email"];
-            }
-            return emailFound;
-        }
 
         async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
         {
             DocumentReference doc = db.Collection("users").Document(email);
-            //initialise empty array for forms
-            ArrayList forms = new ArrayList();
+            DocumentSnapshot snapshot = await doc.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
 
-            Dictionary<string, object> volunteer = new Dictionary<string, object>()
+            }
+            else
+            {
+                //initialise empty array for forms
+                ArrayList forms = new ArrayList();
+
+                Dictionary<string, object> volunteer = new Dictionary<string, object>()
             {
                 {"volunteerName", VolunteerName},
                 {"nationality", Nationality},
@@ -89,7 +84,8 @@ namespace FSD_Helpderly.DAL
                 {"forms", forms }
             };
 
-            await doc.SetAsync(volunteer);
+                await doc.SetAsync(volunteer);
+            }
         }
 
         async private void AddFormToVolunteer(string email, string formId)
