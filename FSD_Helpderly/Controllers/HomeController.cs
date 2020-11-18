@@ -32,35 +32,19 @@ namespace FSD_Helpderly.Controllers
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
-       async public Task<IActionResult> Accept(string id)
+       async public Task<IActionResult> ViewPostDetails(string id)
         {
             ElderlyPost selectedpost = await fDal.GetForm(id);
-            return View("../Volunteers/Accept", selectedpost);            
-            
-            //ElderlyPost elderMap = formDetailMaptoAccept(elderpost);
-            //return View(elderMap);
-
-
+            System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
+            return View("../Volunteers/ViewPostDetails", selectedpost);            
         }
 
-        //public ElderlyPost formDetailMaptoAccept(ElderlyPost elderpost)
-        //{
-        //    ElderlyPost formDetailMaptoAccept = new ElderlyPost
-        //    {
-        //        AdditionalInfo = elderpost.AdditionalInfo,
-        //        Description = elderpost.Description,
-        //        Email = elderpost.Email,
-        //        EndTime = elderpost.EndTime,
-        //        Location = elderpost.Location,
-        //        MobileNumber = elderpost.MobileNumber,
-        //        Name = elderpost.Name,
-        //        QuantityVolunteer = elderpost.QuantityVolunteer,
-        //        Region = elderpost.Region,
-        //        StartTime = elderpost.StartTime,
-
-        //    };
-        //    return formDetailMaptoAccept;
-        //}
+        async public Task<IActionResult> AcceptForm(string id)
+        {
+            fDal.VolunteerAcceptForm("notyumin@gmail.com", id);
+            List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
+            return View("../Volunteers/VolunteerViewPost", elderlyPostList);
+        }
 
         public IActionResult Form()
         {

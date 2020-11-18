@@ -39,22 +39,22 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>@item.AdditionalInfo</td>
-                    <td>@item.Description</td>
-                    <td>@item.Email</td>
-                    <td>@item.EndTime</td>
-                    <td>@item.Location</td>
-                    <td>@item.MobileNumber</td>
-                    <td>@item.Name</td>
-                    <td>@item.QuantityVolunteer</td>
-                    <td>@item.Region</td>
-                    <td>@item.StartTime</td>
-                    <td>
-                        <a asp-action="ViewPostDetails" asp-controller="Home"
-                           asp-route-id="@item.FormID">View</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@item.AdditionalInfo</td>
+                        <td>@item.Description</td>
+                        <td>@item.Email</td>
+                        <td>@item.EndTime</td>
+                        <td>@item.Location</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.Name</td>
+                        <td>@item.QuantityVolunteer</td>
+                        <td>@item.Region</td>
+                        <td>@item.StartTime</td>
+                        <td>
+                            <a asp-action="Cancel" asp-controller="Home"
+                               asp-route-id="@item.FormID">View</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
