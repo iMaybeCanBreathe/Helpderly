@@ -69,7 +69,7 @@
         </fieldset>
         <fieldset>
             <label asp-for="MobileNumber"></label>
-            <input asp-for="MobileNumber" type="number" id="mobileNumber" required>
+            <input asp-for="MobileNumber" type="number" id="mobileNumber" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==8) return false;" required>
             <span asp-validation-for="MobileNumber" class="text-danger"></span>
         </fieldset>
         <fieldset>

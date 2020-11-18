@@ -44,7 +44,9 @@ namespace FSD_Helpderly.Models
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Mobile Number")]
-        [StringLength(10, ErrorMessage = "Your number is too long")]
+        [RegularExpression("^[689]", ErrorMessage = "Your number must start with 6, 8 or 9.")]
+        [MinLength(8, ErrorMessage = "Your number must consist of 8 digits.")]
+
         public string MobileNumber { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]

@@ -298,7 +298,7 @@ namespace FSD_Helpderly.DAL
             AddVolunteerToForm(email, formId);
         }
 
-        public void VolunteerUnacceptForm(string email, string formId)
+        public void VolunteerCancelForm(string email, string formId)
         {
             RemoveFormFromVolunteer(email, formId);
             RemoveVolunteerFromForm(email, formId);
