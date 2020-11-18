@@ -61,26 +61,36 @@ namespace FSD_Helpderly.DAL
 
             return password;
         }
-        async public Task<string> GetVolunteerEmail(string email)
+
+        async public Task<List<object>> GetVolunteerForms(string email)
         {
-            string emailFound = "";
+            List<object> formIds = new List<object>();
+
             DocumentReference doc = db.Collection("users").Document(email);
             DocumentSnapshot snap = await doc.GetSnapshotAsync();
             if (snap.Exists)
             {
                 Dictionary<string, object> volunteer = snap.ToDictionary();
-                emailFound = (string)volunteer["email"];
+                formIds = (List<object>)volunteer["forms"];
             }
-            return emailFound;
+
+            return formIds;
         }
 
         async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
         {
             DocumentReference doc = db.Collection("users").Document(email);
-            //initialise empty array for forms
-            ArrayList forms = new ArrayList();
+            DocumentSnapshot snapshot = await doc.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
 
-            Dictionary<string, object> volunteer = new Dictionary<string, object>()
+            }
+            else
+            {
+                //initialise empty array for forms
+                ArrayList forms = new ArrayList();
+
+                Dictionary<string, object> volunteer = new Dictionary<string, object>()
             {
                 {"volunteerName", VolunteerName},
                 {"nationality", Nationality},
@@ -89,7 +99,8 @@ namespace FSD_Helpderly.DAL
                 {"forms", forms }
             };
 
-            await doc.SetAsync(volunteer);
+                await doc.SetAsync(volunteer);
+            }
         }
 
         async private void AddFormToVolunteer(string email, string formId)
@@ -176,11 +187,13 @@ namespace FSD_Helpderly.DAL
                 {
                     FormID = doc.Id,
                     AdditionalInfo = (string)docDic["additionalInfo"],
+                    CurrentQuantityVolunteer = 0,
                     Description = (string)docDic["description"],
                     Email = (string)docDic["email"],
                     EndTime = convertedEndTIme,
                     Name = (string)docDic["name"],
                     Location = (string)docDic["location"],
+                    QuantityVolunteer = (int)(long)docDic["quantityVolunteer"],
                     MobileNumber = (string)docDic["mobileNumber"],
                     Region = (string)docDic["region"],
                     StartTime = convertedStartTime,
@@ -229,6 +242,7 @@ namespace FSD_Helpderly.DAL
                     EndTime = convertedEndTIme,
                     Name = (string)docDic["name"],
                     Location = (string)docDic["location"],
+                    QuantityVolunteer = (int)(long)docDic["quantityVolunteer"],
                     MobileNumber = (string)docDic["mobileNumber"],
                     Region = (string)docDic["region"],
                     StartTime = convertedStartTime,
@@ -270,7 +284,7 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 await doc.UpdateAsync("volunteers", FieldValue.ArrayUnion(email));
-                await doc.UpdateAsync("quantityVolunteer", FieldValue.Increment(1));
+                await doc.UpdateAsync("currentQuantityVolunteer", FieldValue.Increment(1));
             }
         }
 
@@ -282,7 +296,7 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 await doc.UpdateAsync("volunteers", FieldValue.ArrayRemove(email));
-                await doc.UpdateAsync("quantityVolunteer", FieldValue.Increment(-1));
+                await doc.UpdateAsync("currentQuantityVolunteer", FieldValue.Increment(-1));
             }
         }
 
