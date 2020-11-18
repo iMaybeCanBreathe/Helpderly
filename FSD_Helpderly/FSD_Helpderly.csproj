@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ChangePasswordController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FireSharp" Version="2.0.4" />
     <PackageReference Include="Google.Cloud.Firestore" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />

@@ -54,10 +54,22 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 Dictionary<string, object> volunteer = snap.ToDictionary();
-                password = (string) volunteer["Password"];
+                password = (string) volunteer["password"];
             }
 
             return password;
+        }
+        async public Task<string> GetVolunteerEmail(string email)
+        {
+            string emailFound = "";
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> volunteer = snap.ToDictionary();
+                emailFound = (string)volunteer["email"];
+            }
+            return emailFound;
         }
 
         async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
@@ -114,12 +126,14 @@ namespace FSD_Helpderly.DAL
 
             foreach (DocumentSnapshot doc in snap)
             {
+                Dictionary<string, object> docDic = doc.ToDictionary();
+
                 //Convert endTime
                 Timestamp endTime;
                 System.DateTime? convertedEndTIme;
-                if (doc.ToDictionary()["endTime"] != null)
+                if (docDic["endTime"] != null)
                 {
-                    endTime = (Timestamp)doc.ToDictionary()["endTime"];
+                    endTime = (Timestamp)docDic["endTime"];
                     convertedEndTIme = endTime.ToDateTime();
                 }
                 else
@@ -128,19 +142,20 @@ namespace FSD_Helpderly.DAL
                 }
 
                 //Convert startTime
-                Timestamp startTime = (Timestamp)doc.ToDictionary()["startTime"];
+                Timestamp startTime = (Timestamp)docDic["startTime"];
                 System.DateTime convertedStartTime = startTime.ToDateTime();
 
                 ElderlyPost elderlyPost = new ElderlyPost()
                 {
                     FormID = doc.Id,
-                    AdditionalInfo = (string)doc.ToDictionary()["additionalInfo"],
-                    Description = (string)doc.ToDictionary()["description"],
-                    Email = (string)doc.ToDictionary()["email"],
+                    AdditionalInfo = (string)docDic["additionalInfo"],
+                    Description = (string)docDic["description"],
+                    Email = (string)docDic["email"],
                     EndTime = convertedEndTIme,
-                    Name = (string)doc.ToDictionary()["name"],
-                    Location = (string)doc.ToDictionary()["location"],
-                    MobileNumber = (string)doc.ToDictionary()["mobileNumber"],
+                    Name = (string)docDic["name"],
+                    Location = (string)docDic["location"],
+                    MobileNumber = (string)docDic["mobileNumber"],
+                    Region = (string)docDic["region"],
                     StartTime = convertedStartTime,
                 };
                 forms.Add(elderlyPost);
@@ -163,6 +178,7 @@ namespace FSD_Helpderly.DAL
                 { "location", ePost.Location },
                 { "mobileNumber", ePost.MobileNumber },
                 { "quantityVolunteer", ePost.QuantityVolunteer },
+                { "region", ePost.Region },
                 { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
             };
 
