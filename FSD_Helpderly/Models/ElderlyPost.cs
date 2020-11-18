@@ -56,7 +56,5 @@ namespace FSD_Helpderly.Models
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
-
-
     }
 }
