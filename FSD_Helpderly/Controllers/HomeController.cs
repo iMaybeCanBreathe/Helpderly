@@ -50,7 +50,7 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
-                fDal.AddForm(elderlyPost.AdditionalInfo, elderlyPost.Description, elderlyPost.Email, elderlyPost.EndTime, elderlyPost.Name, elderlyPost.Location, elderlyPost.MobileNumber, elderlyPost.QuantityVolunteer, elderlyPost.StartTime);
+                fDal.AddForm(elderlyPost);
                 return View("FormTY");
             }
 
