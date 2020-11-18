@@ -44,7 +44,13 @@
         </fieldset>
         <fieldset>
             <label asp-for="Region"></label>
-            <input asp-for="Region" type="text" id="region" required>
+            <select asp-for="Region" type="text" id="region" required>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="Central">Central</option>
+            </select>
             <span asp-validation-for="Location" class="text-danger"></span>
         </fieldset>
         <fieldset>
@@ -59,10 +65,10 @@
         </fieldset>
         <fieldset>
             <label asp-for="QuantityVolunteer"></label>
-            <select asp-for="QuantityVolunteer" type="number" id="quantityVolunteer">
-                <option value="1">1</option>
-                <option value="2">2</option>
-            </select>
+                <select asp-for="QuantityVolunteer" type="number" id="quantityVolunteer">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
             <span asp-validation-for="QuantityVolunteer" class="text-danger"></span>
 
         </fieldset>

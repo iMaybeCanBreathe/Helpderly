@@ -25,6 +25,15 @@
         startTimeField.value = localDatetime;
         endTimeField.value = localDatetime;
     });
+
+    function changeHandler(val) {
+        if (Number(val.value) > 100) {
+            val.value = 100
+        }
+        else if (Number(val.value) < 1) {
+            val.value = 1
+        }
+    }
 </script>
 <head>
     <link href="~/css/ElderlyForm.css" rel="stylesheet" />
@@ -44,7 +53,13 @@
         </fieldset>
         <fieldset>
             <label asp-for="Region"></label>
-            <input asp-for="Region" type="text" id="region" required>
+            <select asp-for="Region" type="text" id="region" required>
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="Central">Central</option>
+            </select>
             <span asp-validation-for="Location" class="text-danger"></span>
         </fieldset>
         <fieldset>
@@ -59,7 +74,7 @@
         </fieldset>
         <fieldset>
             <label asp-for="QuantityVolunteer"></label>
-            <input asp-for="QuantityVolunteer" type="number" id="quantityVolunteer">
+            <input asp-for="QuantityVolunteer" type="number" id="quantityVolunteer" maxlength="3" onchange="changeHandler(this)" />
             <span asp-validation-for="QuantityVolunteer" class="text-danger"></span>
 
         </fieldset>

@@ -32,8 +32,46 @@ namespace FSD_Helpderly.Controllers
             else
             {
                 //Input validation fails, return to the register view to display error message
+                TempData["Message"] = "Account creation was unsuccessful !";
                 return View(register);
             }
         }
+
+        //GET: Register/ChangePassword
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            //if ((HttpContext.Session.GetString("Role") == null) ||
+            //    (HttpContext.Session.GetString("Role") != "Customer"))
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            ChangePassword changePassword = new ChangePassword();
+            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
+            return View(changePassword);
+        }
+
+        //POST: Register/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePassword changePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                //Update password record to database
+
+                //int customerid = (int)HttpContext.Session.GetInt32("id");
+                //CustomerContext.Update(changePassword, customerid);
+
+                TempData["Message"] = "Password have been successfully changed!";
+
+                return View(changePassword);
+            }
+            else
+            {
+                return View(changePassword);
+            }
+        }
+
     }
 }
