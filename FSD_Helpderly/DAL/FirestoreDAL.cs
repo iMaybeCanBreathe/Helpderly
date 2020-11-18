@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -76,33 +77,40 @@ namespace FSD_Helpderly.DAL
         async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
         {
             DocumentReference doc = db.Collection("users").Document(email);
+            //initialise empty array for forms
+            ArrayList forms = new ArrayList();
 
             Dictionary<string, object> volunteer = new Dictionary<string, object>()
             {
                 {"volunteerName", VolunteerName},
                 {"nationality", Nationality},
                 {"telNo", TelNo},
-                {"password", password}
+                {"password", password},
+                {"forms", forms }
             };
 
             await doc.SetAsync(volunteer);
         }
 
-        //WIP: DO NOT USE THIS YET
-        async public void AddFormToVolunteer(string email, string formId)
+        async private void AddFormToVolunteer(string email, string formId)
         {
             DocumentReference doc = db.Collection("users").Document(email);
             DocumentSnapshot snap = await doc.GetSnapshotAsync();
-            
-
-            Dictionary<string, object> volunteer = new Dictionary<string, object>()
-            {
-                {"forms", formId},
-            };
 
             if (snap.Exists)
             {
-                await doc.UpdateAsync(volunteer);
+                await doc.UpdateAsync("forms", FieldValue.ArrayUnion(formId));
+            }
+        }
+
+        async private void RemoveFormFromVolunteer(string email, string formId)
+        {
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            if (snap.Exists)
+            {
+                await doc.UpdateAsync("forms", FieldValue.ArrayRemove(formId));
             }
         }
 
@@ -234,6 +242,8 @@ namespace FSD_Helpderly.DAL
         async public void AddForm(ElderlyPost ePost)
         {
             CollectionReference coll = db.Collection("forms");
+            //initlialise empty array for volunteers
+            ArrayList volunteers = new ArrayList();
 
             Dictionary<string, object> form = new Dictionary<string, object>()
             {
@@ -247,9 +257,49 @@ namespace FSD_Helpderly.DAL
                 { "quantityVolunteer", ePost.QuantityVolunteer },
                 { "region", ePost.Region },
                 { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
+                { "volunteers", volunteers},
             };
 
             await coll.AddAsync(form);
+        }
+        async private void AddVolunteerToForm(string email, string formId)
+        {
+            DocumentReference doc = db.Collection("forms").Document(formId);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            if (snap.Exists)
+            {
+                await doc.UpdateAsync("volunteers", FieldValue.ArrayUnion(email));
+            }
+        }
+
+        async private void RemoveVolunteerFromForm(string email, string formId)
+        {
+            DocumentReference doc = db.Collection("forms").Document(formId);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            if (snap.Exists)
+            {
+                await doc.UpdateAsync("volunteers", FieldValue.ArrayRemove(email));
+            }
+        }
+
+        /*******************************/
+        //                              /
+        //           Others             /
+        //                              /
+        /*******************************/
+
+        public void VolunteerAcceptForm(string email, string formId)
+        {
+            AddFormToVolunteer(email, formId);
+            AddVolunteerToForm(email, formId);
+        }
+
+        public void VolunteerUnacceptForm(string email, string formId)
+        {
+            RemoveFormFromVolunteer(email, formId);
+            RemoveVolunteerFromForm(email, formId);
         }
     }
 }
