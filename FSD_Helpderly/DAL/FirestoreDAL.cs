@@ -270,6 +270,7 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 await doc.UpdateAsync("volunteers", FieldValue.ArrayUnion(email));
+                await doc.UpdateAsync("quantityVolunteer", FieldValue.Increment(1));
             }
         }
 
@@ -281,6 +282,7 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 await doc.UpdateAsync("volunteers", FieldValue.ArrayRemove(email));
+                await doc.UpdateAsync("quantityVolunteer", FieldValue.Increment(-1));
             }
         }
 
