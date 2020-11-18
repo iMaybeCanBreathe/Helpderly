@@ -44,7 +44,7 @@ namespace FSD_Helpderly.Models
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Mobile Number")]
-        [RegularExpression("^[689]", ErrorMessage = "Your number must start with 6, 8 or 9.")]
+        [RegularExpression("(6|8|9)[0-9]{0,7}", ErrorMessage = "Your number must start with 6, 8 or 9.")]
         [MinLength(8, ErrorMessage = "Your number must consist of 8 digits.")]
 
         public string MobileNumber { get; set; }

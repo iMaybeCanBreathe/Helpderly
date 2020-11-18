@@ -32,7 +32,6 @@ namespace FSD_Helpderly.Controllers
             else
             {
                 //Input validation fails, return to the register view to display error message
-                TempData["Message"] = "Account creation was unsuccessful !";
                 return View(register);
             }
         }
