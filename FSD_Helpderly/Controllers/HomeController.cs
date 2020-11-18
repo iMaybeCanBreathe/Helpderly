@@ -29,13 +29,7 @@ namespace FSD_Helpderly.Controllers
         }
         async public Task<IActionResult> VolunteerViewPost()
         {
-            Dictionary<string, ElderlyPost> forms = await fDal.GetAllForms();
-            List<ElderlyPost> elderlyPostList = new List<ElderlyPost>();
-            foreach (KeyValuePair<string, ElderlyPost> form in forms)
-            {
-                System.Diagnostics.Debug.WriteLine(form.Key);
-                elderlyPostList.Add(form.Value);
-            }
+            List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
         public IActionResult Form()
