@@ -39,11 +39,17 @@ namespace FSD_Helpderly.Controllers
             return View("../Volunteers/ViewPostDetails", selectedpost);            
         }
 
-        async public Task<IActionResult> SelectedViewPost(string id)
+        async public Task<IActionResult> SelectedViewPost()
         {
-            fDal.VolunteerAcceptForm("notyumin@gmail.com", id);
-            List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
-            return View("../Volunteers/SelectedViewPost", elderlyPostList);
+            List<object> SelectedFormId = await fDal.GetVolunteerForms("BBean@yahoo.com");
+            List<ElderlyPost> selectedform = new List<ElderlyPost>();
+            foreach (string formid in SelectedFormId)
+            {
+              ElderlyPost form = await fDal.GetForm(formid);
+                selectedform.Add(form);
+            }
+
+            return View("../Volunteers/SelectedViewPost",selectedform);
         }
 
         public IActionResult Form()
