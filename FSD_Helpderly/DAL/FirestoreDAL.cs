@@ -62,6 +62,21 @@ namespace FSD_Helpderly.DAL
             return password;
         }
 
+        async public Task<List<object>> GetVolunteerForms(string email)
+        {
+            List<object> formIds = new List<object>();
+
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> volunteer = snap.ToDictionary();
+                formIds = (List<object>)volunteer["forms"];
+            }
+
+            return formIds;
+        }
+
         async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
         {
             DocumentReference doc = db.Collection("users").Document(email);
@@ -172,6 +187,7 @@ namespace FSD_Helpderly.DAL
                 {
                     FormID = doc.Id,
                     AdditionalInfo = (string)docDic["additionalInfo"],
+                    CurrentQuantityVolunteer = 0,
                     Description = (string)docDic["description"],
                     Email = (string)docDic["email"],
                     EndTime = convertedEndTIme,
@@ -254,7 +270,7 @@ namespace FSD_Helpderly.DAL
                 { "mobileNumber", ePost.MobileNumber },
                 { "quantityVolunteer", ePost.QuantityVolunteer },
                 { "region", ePost.Region },
-                { "startTime", Timestamp.FromDateTime(ePost.StartTime)},
+                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
                 { "volunteers", volunteers},
             };
 
@@ -268,7 +284,7 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 await doc.UpdateAsync("volunteers", FieldValue.ArrayUnion(email));
-                await doc.UpdateAsync("quantityVolunteer", FieldValue.Increment(1));
+                await doc.UpdateAsync("currentQuantityVolunteer", FieldValue.Increment(1));
             }
         }
 
@@ -280,7 +296,7 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 await doc.UpdateAsync("volunteers", FieldValue.ArrayRemove(email));
-                await doc.UpdateAsync("quantityVolunteer", FieldValue.Increment(-1));
+                await doc.UpdateAsync("currentQuantityVolunteer", FieldValue.Increment(-1));
             }
         }
 

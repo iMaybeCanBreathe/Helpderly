@@ -12,6 +12,9 @@ namespace FSD_Helpderly.Models
         [Display(Name = "Form ID")]
         public string FormID { get; set; }
 
+        [Display(Name = "Current Quantity")]
+        public int CurrentQuantityVolunteer { get; set; }
+
         [Display(Name = "Additional Info")]
         [StringLength(50, ErrorMessage = "Info too long, you may add it in the description instead.")]
         public string AdditionalInfo { get; set; }
