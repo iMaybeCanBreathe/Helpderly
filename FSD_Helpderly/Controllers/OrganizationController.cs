@@ -15,22 +15,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace FSD_Helpderly.Controllers
 {
-    public class HomeController : Controller
+    public class OrganizationController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private FirestoreDAL fDal = new FirestoreDAL();
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
         public IActionResult Index()
         {
             return View();
-        }
-        async public Task<IActionResult> VolunteerViewPost()
-        {
-            List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
-            return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
         public IActionResult Form()
         {
@@ -44,8 +34,6 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine(elderlyPost.StartTime.ToString());
-                System.Diagnostics.Debug.WriteLine(elderlyPost.EndTime.ToString());
                 fDal.AddForm(elderlyPost);
                 return View("FormTY");
             }
@@ -55,13 +43,5 @@ namespace FSD_Helpderly.Controllers
                 return View("Form", elderlyPost);
             }
         }
-        
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
     }
 }

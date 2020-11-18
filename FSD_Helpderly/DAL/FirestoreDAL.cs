@@ -115,23 +115,25 @@ namespace FSD_Helpderly.DAL
         //                              /
         /*******************************/
 
-        //Returns: A Dictionary where Key is the document ID, and value is ElderlyPost object which 
-        //         has the keys [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
-        async public Task<Dictionary<string, ElderlyPost>> GetAllForms()
+        //Returns: An ElderlyPost object which 
+        //         has the properties [additionalInfo, description, email, endTime, firstName, lastname, location, mobileNumber, startTime]
+        async public Task<List<ElderlyPost>> GetAllForms()
         {
-            Dictionary<string, ElderlyPost> forms = new Dictionary<string, ElderlyPost>();
+            List<ElderlyPost> forms = new List<ElderlyPost>();
 
             CollectionReference coll = db.Collection("forms");
             QuerySnapshot snap = await coll.GetSnapshotAsync();
 
             foreach (DocumentSnapshot doc in snap)
             {
+                Dictionary<string, object> docDic = doc.ToDictionary();
+
                 //Convert endTime
                 Timestamp endTime;
                 System.DateTime? convertedEndTIme;
-                if (doc.ToDictionary()["endTime"] != null)
+                if (docDic["endTime"] != null)
                 {
-                    endTime = (Timestamp)doc.ToDictionary()["endTime"];
+                    endTime = (Timestamp)docDic["endTime"];
                     convertedEndTIme = endTime.ToDateTime();
                 }
                 else
@@ -140,43 +142,44 @@ namespace FSD_Helpderly.DAL
                 }
 
                 //Convert startTime
-                Timestamp startTime = (Timestamp)doc.ToDictionary()["startTime"];
+                Timestamp startTime = (Timestamp)docDic["startTime"];
                 System.DateTime convertedStartTime = startTime.ToDateTime();
 
                 ElderlyPost elderlyPost = new ElderlyPost()
                 {
-                    AdditionalInfo = (string)doc.ToDictionary()["additionalInfo"],
-                    Description = (string)doc.ToDictionary()["description"],
-                    Email = (string)doc.ToDictionary()["email"],
+                    FormID = doc.Id,
+                    AdditionalInfo = (string)docDic["additionalInfo"],
+                    Description = (string)docDic["description"],
+                    Email = (string)docDic["email"],
                     EndTime = convertedEndTIme,
-                    FirstName = (string)doc.ToDictionary()["firstName"],
-                    LastName = (string)doc.ToDictionary()["lastName"],
-                    Location = (string)doc.ToDictionary()["location"],
-                    MobileNumber = (string)doc.ToDictionary()["mobileNumber"],
+                    Name = (string)docDic["name"],
+                    Location = (string)docDic["location"],
+                    MobileNumber = (string)docDic["mobileNumber"],
+                    Region = (string)docDic["region"],
                     StartTime = convertedStartTime,
                 };
-                forms.Add(doc.Id, elderlyPost);
+                forms.Add(elderlyPost);
             }
 
             return forms;
         }
 
-        async public void AddForm(string additionalInfo, string description, string email, 
-            System.DateTime? endTime, string firstName, string lastname, string location, string mobileNumber, System.DateTime startTime)
+        async public void AddForm(ElderlyPost ePost)
         {
             CollectionReference coll = db.Collection("forms");
 
             Dictionary<string, object> form = new Dictionary<string, object>()
             {
-                { "additionalInfo", additionalInfo },
-                { "description", description },
-                { "email", email },
-                { "endTime", endTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(endTime), DateTimeKind.Utc)) },
-                { "firstName", firstName },
-                { "lastName", lastname },
-                { "location", location },
-                { "mobileNumber", mobileNumber },
-                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(startTime, DateTimeKind.Utc)) },
+                { "additionalInfo", ePost.AdditionalInfo },
+                { "description", ePost.Description },
+                { "email", ePost.Email },
+                { "endTime", ePost.EndTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(ePost.EndTime), DateTimeKind.Utc)) },
+                { "name", ePost.Name },
+                { "location", ePost.Location },
+                { "mobileNumber", ePost.MobileNumber },
+                { "quantityVolunteer", ePost.QuantityVolunteer },
+                { "region", ePost.Region },
+                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
             };
 
             await coll.AddAsync(form);

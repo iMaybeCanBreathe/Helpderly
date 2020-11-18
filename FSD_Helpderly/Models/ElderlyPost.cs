@@ -9,6 +9,9 @@ namespace FSD_Helpderly.Models
 {
     public class ElderlyPost
     {
+        [Display(Name = "Form ID")]
+        public string FormID { get; set; }
+
         [Display(Name = "Additional Info")]
         [StringLength(50, ErrorMessage = "Info too long, you may add it in the description instead.")]
         public string AdditionalInfo { get; set; }
@@ -25,14 +28,9 @@ namespace FSD_Helpderly.Models
         public DateTime? EndTime { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Name")]
         [StringLength(50, ErrorMessage = "Your name is too long")]
-        public string LastName { get; set; }
-
-        [Required(ErrorMessage = "Please do not leave this blank")]
-        [Display(Name = "First Name")]
-        [StringLength(50, ErrorMessage = "Your name is too long")]
-        public string FirstName { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Location")]
@@ -40,12 +38,23 @@ namespace FSD_Helpderly.Models
         public string Location { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
+        [Display(Name = "Region")]
+        [StringLength(50, ErrorMessage = "Your location is too long")]
+        public string Region { get; set; }
+
+        [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Mobile Number")]
         [StringLength(10, ErrorMessage = "Your number is too long")]
         public string MobileNumber { get; set; }
 
         [Required(ErrorMessage = "Please do not leave this blank")]
+        [Display(Name = "Quantity")]
+        public int QuantityVolunteer { get; set; }
+
+        [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
+
+
     }
 }
