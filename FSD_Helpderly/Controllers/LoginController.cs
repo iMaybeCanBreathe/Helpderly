@@ -17,33 +17,7 @@
 //        {
 //            return View();
 //        }
-
-<<<<<<< HEAD
-        // POST: Login
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //async public Task<ActionResult> Login(IFormCollection formData)
-        //{
-        //    // Read inputs from textboxes             
-        //    // Email address converted to lowercase
-        //    string password = formData["Password"].ToString();
-        //    string email = formData["txtEmail"].ToString();
-
-        //    string dbPassword = await fDal.GetVolunteerPassword(email);
-        //    if (dbPassword == "")
-        //    {
-        //        dbPassword = await fDal.GetOrgPassword(email);
-        //        return RedirectToAction("VolunteerViewPost");
-        //    }
-        //    if (dbPassword == "")
-        //    {
-        //        TempData["Message"] = "Email not found";
-        //        return View("Login");
-        //    }
-        //}
-    }
-}
-=======
+    
 //        // POST: Login
 //        [HttpPost]
 //        [ValidateAntiForgeryToken]
@@ -68,4 +42,3 @@
 //        }
 //    }
 //}
->>>>>>> 850823427c796252bbe26bd93860bf20c93cba41

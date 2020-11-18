@@ -254,7 +254,7 @@ namespace FSD_Helpderly.DAL
                 { "mobileNumber", ePost.MobileNumber },
                 { "quantityVolunteer", ePost.QuantityVolunteer },
                 { "region", ePost.Region },
-                { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
+                { "startTime", Timestamp.FromDateTime(ePost.StartTime)},
                 { "volunteers", volunteers},
             };
 
