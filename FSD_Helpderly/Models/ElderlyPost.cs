@@ -12,6 +12,9 @@ namespace FSD_Helpderly.Models
         [Display(Name = "Form ID")]
         public string FormID { get; set; }
 
+        [Display(Name = "Current Quantity")]
+        public int CurrentQuantityVolunteer { get; set; }
+
         [Display(Name = "Additional Info")]
         [StringLength(50, ErrorMessage = "Info too long, you may add it in the description instead.")]
         public string AdditionalInfo { get; set; }
@@ -44,7 +47,7 @@ namespace FSD_Helpderly.Models
 
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Mobile Number")]
-        [RegularExpression("^[689]", ErrorMessage = "Your number must start with 6, 8 or 9.")]
+        [RegularExpression("(6|8|9)[0-9]{0,7}", ErrorMessage = "Your number must start with 6, 8 or 9.")]
         [MinLength(8, ErrorMessage = "Your number must consist of 8 digits.")]
 
         public string MobileNumber { get; set; }
@@ -56,7 +59,5 @@ namespace FSD_Helpderly.Models
         [Required(ErrorMessage = "Please do not leave this blank")]
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
-
-
     }
 }

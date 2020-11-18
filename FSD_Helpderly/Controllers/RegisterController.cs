@@ -20,19 +20,28 @@ namespace FSD_Helpderly.Controllers
         // POST: Register/Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(Register register)
+        public async Task<ActionResult> IndexAsync(Register register)
         {
             if (ModelState.IsValid)
             {
-                //Add volunteer record to database
-                fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
-                TempData["Message"] = "Your Account have been successfully created!";
-                return RedirectToAction("Index");
+                string email = register.Email;
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword == "")
+                {
+                    //Add volunteer record to database
+                    fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
+                    TempData["Message"] = "Your Account have been successfully created!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["Message"] = "Email already exist!";
+                    return View(register);
+                }
             }
             else
             {
                 //Input validation fails, return to the register view to display error message
-                TempData["Message"] = "Account creation was unsuccessful !";
                 return View(register);
             }
         }
