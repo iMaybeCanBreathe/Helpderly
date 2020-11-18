@@ -55,10 +55,22 @@ namespace FSD_Helpderly.DAL
             if (snap.Exists)
             {
                 Dictionary<string, object> volunteer = snap.ToDictionary();
-                password = (string) volunteer["Password"];
+                password = (string) volunteer["password"];
             }
 
             return password;
+        }
+        async public Task<string> GetVolunteerEmail(string email)
+        {
+            string emailFound = "";
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> volunteer = snap.ToDictionary();
+                emailFound = (string)volunteer["email"];
+            }
+            return emailFound;
         }
 
         async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
