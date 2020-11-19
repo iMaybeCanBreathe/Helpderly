@@ -222,7 +222,6 @@ namespace FSD_Helpderly.Controllers
         async public Task<IActionResult> ViewPostDetails(string id)
         {
             ElderlyPost selectedpost = await fDal.GetForm(id);
-            System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
             return View("../Volunteers/ViewPostDetails", selectedpost);            
         }
 
