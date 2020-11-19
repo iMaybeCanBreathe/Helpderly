@@ -25,7 +25,8 @@ namespace FSD_Helpderly.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");
+            string email = HttpContext.Session.GetString("Email");
+            List<object> selectedFormIds = await fDal.GetVolunteerForms(email);
             List<ElderlyPost> selectedForms = new List<ElderlyPost>();
             foreach (string formid in selectedFormIds)
             {
