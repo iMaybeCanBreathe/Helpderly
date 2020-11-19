@@ -192,22 +192,6 @@ namespace FSD_Helpderly.Controllers
             return View("../Volunteers/SelectedViewPost",selectedform);
         }
 
-
-        public IActionResult AcceptPost(string formId)
-        {
-            string email = HttpContext.Session.GetString("Email");
-            fDal.VolunteerAcceptForm(email, formId);
-            return RedirectToAction("SelectedViewPost");
-        }
-
-
-        public IActionResult CancelPost(string formId)
-        {
-            string email = HttpContext.Session.GetString("Email");
-            fDal.VolunteerCancelForm(email, formId);
-            return RedirectToAction("SelectedViewPost");
-        }
-
         public IActionResult Form()
         {
             return View();
