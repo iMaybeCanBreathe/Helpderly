@@ -7,7 +7,7 @@
 <div>
     <div class="table-responsive">
         <div class="unfilteredTable">
-            <form asp-action="VolunteerViewPost" method="post">
+            <form asp-action="ViewFilteredPosts" method="post">
                 <label>Filer By Region:</label>
                 <select type="text" id="region">
                     <option value="North">North</option>
@@ -18,6 +18,12 @@
                 </select>
                 <button type="button" id="filter" class="btn btn-outline-primary" onclick="filterRegion()">Filter</button>
                 <button type="button" id="reset" class="btn btn-outline-secondary" onClick="window.location.reload();">Reset</button>
+                <br /><br />
+                <label for="startTime">Filter by Start Time</label>
+                <input for="startTime" type="datetime-local" id="startTime" name="startTime" required >
+                <label for="endTime">Filter by End Time</label>
+                <input for="endTime" type="datetime-local" id="endTime" name="endTime" required >
+                <button type="submit" value="ViewFilteredPosts" class="btn btn-outline-primary">Filter</button>
             </form>
 
 
@@ -62,7 +68,7 @@
         table = document.getElementById("viewStaff");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[8];
+            td = tr[i].getElementsByTagName("td")[3];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -74,8 +80,5 @@
         }
     }
 
-    function resetFilter() {
-
-    }
 </script>
 
