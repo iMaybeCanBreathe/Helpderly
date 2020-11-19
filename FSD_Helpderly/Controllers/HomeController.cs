@@ -98,6 +98,75 @@ namespace FSD_Helpderly.Controllers
             }
         }
 
+        public IActionResult Register()
+        {
+            return View("../Register/Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(Register register)
+        {
+            if (ModelState.IsValid)
+            {
+                string email = register.Email;
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword == "")
+                {
+                    //Add volunteer record to database
+                    fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
+                    TempData["Message"] = "Your Account have been successfully created!";
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    TempData["Message"] = "Email already exist!";
+                    return View("../Register/Index", register);
+                }
+            }
+            else
+            {
+                //Input validation fails, return to the register view to display error message
+                return View("../Register/Index", register);
+            }
+        }
+
+        //GET: Register/ChangePassword
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            //if ((HttpContext.Session.GetString("Role") == null) ||
+            //    (HttpContext.Session.GetString("Role") != "Customer"))
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            ChangePassword changePassword = new ChangePassword();
+            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
+            return View("../Register/ChangePassword", changePassword);
+        }
+
+        //POST: Register/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePassword changePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                //Update password record to database
+
+                //int customerid = (int)HttpContext.Session.GetInt32("id");
+                //CustomerContext.Update(changePassword, customerid);
+
+                TempData["Message"] = "Password have been successfully changed!";
+
+                return View("../Register/ChangePassword", changePassword);
+            }
+            else
+            {
+                return View("../Register/ChangePassword", changePassword);
+            }
+        }
+
         async public Task<IActionResult> ViewAllPosts()
         {
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
