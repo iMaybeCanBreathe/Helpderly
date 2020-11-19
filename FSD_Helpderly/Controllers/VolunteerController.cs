@@ -47,6 +47,7 @@ namespace FSD_Helpderly.Controllers
             string email = HttpContext.Session.GetString("Email");
             fDal.VolunteerAcceptForm(email, formId);
             return RedirectToAction("SelectedViewPost");
+            
         }
 
 

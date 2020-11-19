@@ -10,9 +10,10 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Name</th>
+                    <th>Phone Number</th>
                     <th>Start Time</th>
                     <th>EndTime <br />
-                    <th>Region</th>
+                    <th>Address</th>
                     <th>Quantity Volunteer</th>
                     <th>View Details</th>
                 </tr>
@@ -20,20 +21,18 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>@item.StartTime</td>
-                        <td>@item.EndTime</td>
-                        <td>@item.Region</td>
-                        <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
-                        <td>
-                            <a asp-action="CancelPost" asp-controller="Volunteer"
-                               asp-route-formId="@item.FormID">Cancel</a>
-                            <a asp-action="ViewPostDetails" asp-controller="Home"
-                               asp-route-id="@item.FormID">View</a>
-
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.MobileNumber</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    <td>@item.Location</td>
+                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                    <td>
+                        <a asp-action="CancelPost" asp-controller="Volunteer"
+                           asp-route-formId="@item.FormID">Cancel</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

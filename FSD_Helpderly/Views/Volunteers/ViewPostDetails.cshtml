@@ -49,23 +49,21 @@
                 <td>Quantity Volunteer</td>
                 <td>@Model.CurrentQuantityVolunteer / @Model.QuantityVolunteer</td>
             </tr>
-            <tr></tr>
-            <tr>
-                <td>
-                    @if (Context.Session.GetString("Role") == "Volunteer")
-                    {
-
-                        <a asp-action="AcceptPost" asp-controller="Volunteer" asp-route-formId="@Model.FormID">Accept Request</a>
-                    }
-                    else if (Context.Session.GetString("Role") == "Admin")
-                    {
-                        //<a asp-action="DeletePost" asp-controller="Admin" asp-route-formId="@Model.FormID">Delete Request</a>
-                    }
-                </td>
-                <td>
-                    <a asp-action="ViewAllPosts" asp-controller="Home">Back to List</a>
-                </td>
-            </tr>
         </tbody>
     </table>
+    <div class="row">
+        <div class="col-sm-5"></div>
+        <div class="col-sm-3">
+            @if (Context.Session.GetString("Role") == "Volunteer")
+            {
+
+                <a asp-action="AcceptPost" asp-controller="Volunteer" asp-route-formId="@Model.FormID">Accept Request</a>
+            }
+            else if (Context.Session.GetString("Role") == "Admin")
+            {
+                //<a asp-action="DeletePost" asp-controller="Admin" asp-route-formId="@Model.FormID">Delete Request</a>
+            }
+            <a asp-action="ViewAllPosts" asp-controller="Home">Back to List</a></div>
+        <div class="col-sm-5"></div>
+    </div>
 </div>
