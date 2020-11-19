@@ -103,6 +103,16 @@ namespace FSD_Helpderly.DAL
             }
         }
 
+        async public void UpdateVolunteerPassword(string ConfirmPassword)
+        {
+            DocumentReference doc = db.Collection("users").Document("BBean@yahoo.com");
+            Dictionary<string, object> updates = new Dictionary<string, object>
+            {
+                { "password", ConfirmPassword }
+            };
+            await doc.UpdateAsync(updates);
+        }
+            
         async private void AddFormToVolunteer(string email, string formId)
         {
             DocumentReference doc = db.Collection("users").Document(email);

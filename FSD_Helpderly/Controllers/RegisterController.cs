@@ -63,18 +63,23 @@ namespace FSD_Helpderly.Controllers
         //POST: Register/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(ChangePassword changePassword)
+        public async Task<ActionResult> ChangePasswordAsync(ChangePassword changePassword)
         {
             if (ModelState.IsValid)
             {
-                //Update password record to database
-
-                //int customerid = (int)HttpContext.Session.GetInt32("id");
-                //CustomerContext.Update(changePassword, customerid);
-
-                TempData["Message"] = "Password have been successfully changed!";
-
-                return View(changePassword);
+                string email = "BBean@yahoo.com";
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword != changePassword.Password)
+                {
+                    TempData["Message1"] = "Current Password is incorrect!";
+                    return View(changePassword);
+                }
+                else
+                {
+                    fDal.UpdateVolunteerPassword(changePassword.ConfirmPassword);
+                    TempData["Message1"] = "Password have been successfully changed!";
+                    return View(changePassword);
+                }
             }
             else
             {
