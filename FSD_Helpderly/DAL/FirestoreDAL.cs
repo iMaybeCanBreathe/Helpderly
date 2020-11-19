@@ -157,6 +157,31 @@ namespace FSD_Helpderly.DAL
 
             return password;
         }
+        async public void AddOrg(string email, string address, string organizationname, string password, string telno)
+        {
+            DocumentReference doc = db.Collection("organizationUsers").Document(email);
+            DocumentSnapshot snapshot = await doc.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
+
+            }
+            else
+            {
+                //initialise empty array for forms
+                ArrayList forms = new ArrayList();
+
+                Dictionary<string, object> organization = new Dictionary<string, object>()
+            {
+                {"address", address},
+                {"organizationName", organizationname},
+                {"password", password},
+                {"telno", telno},
+                {"forms", forms }
+            };
+
+                await doc.SetAsync(organization);
+            }
+        }
 
         /*******************************/
         //                              /
