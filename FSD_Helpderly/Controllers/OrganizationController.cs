@@ -20,10 +20,15 @@ namespace FSD_Helpderly.Controllers
         private FirestoreDAL fDal = new FirestoreDAL();
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Form", "Organization");
         }
         public IActionResult Form()
         {
+            if (HttpContext.Session.GetString("Role") != "Organization")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             return View();
         }
 

@@ -15,10 +15,17 @@
         {
             @await Html.PartialAsync("VolunteerNavbar.cshtml")
         }
+
         else if (Context.Session.GetString("Role") == "Organization")
         {
             @await Html.PartialAsync("OrganizationNavbar.cshtml")
         }
+
+        else if (Context.Session.GetString("Role") == "Admin")
+        {
+            @await Html.PartialAsync("AdminNavbar.cshtml")
+        }
+
         else
         {
             @await Html.PartialAsync("DefaultNavbar.cshtml")

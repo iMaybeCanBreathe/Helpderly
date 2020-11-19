@@ -12,7 +12,6 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -26,7 +25,7 @@ namespace FSD_Helpderly.Controllers
         }
         public IActionResult Index()
         {
-            return RedirectToAction("Form", "Home");
+            return View();
         }
 
         public IActionResult Login()
@@ -92,20 +91,45 @@ namespace FSD_Helpderly.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("CustomError", "Email not found");
-                    return View(login);
+                    //if email not found in volunteer and organisation, check in admin
+                    string AdminPassword = await fDal.GetAdminPassword(email);
+                    if (AdminPassword != "")
+                    {
+                        if (AdminPassword == password)
+                        {
+                            //login to Admin
+
+                            //StoreLocation user role "Organization" as a string in session with the key "Role"
+                            HttpContext.Session.SetString("Role", "Admin");
+                            
+                            //Store user email string in session with the key "Email"
+                            HttpContext.Session.SetString("Email", email);
+
+                            return RedirectToAction("ViewAllPosts");
+                        }
+
+                        else
+                        {
+                            ModelState.AddModelError("AdminError", "Incorrect password");
+                            return View(login);
+                        }
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError("CustomError", "Email not found");
+                        return View(login);
+                    }
                 }
             }
         }
 
-        //Logout Current Session
         public ActionResult LogOut()
         {
             // Clear all key-values pairs stored in session state
             HttpContext.Session.Clear();
-
-            // Redirect logout user to the home page
-            return RedirectToAction("Index");
+            // Call the Index action of Home controller
+            return RedirectToAction("Login");
         }
 
         public IActionResult Register()
@@ -126,7 +150,7 @@ namespace FSD_Helpderly.Controllers
                     //Add volunteer record to database
                     fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
                     TempData["Message"] = "Your Account have been successfully created!";
-                    return View("../Register/Index", register);
+                    return RedirectToAction("Login");
                 }
                 else
                 {
@@ -145,36 +169,31 @@ namespace FSD_Helpderly.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            if ((HttpContext.Session.GetString("Role") == null) ||
-                (HttpContext.Session.GetString("Role") != "Volunteer"))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            //if ((HttpContext.Session.GetString("Role") == null) ||
+            //    (HttpContext.Session.GetString("Role") != "Customer"))
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
             ChangePassword changePassword = new ChangePassword();
-                changePassword.Email = HttpContext.Session.GetString("Email");
-                return View("../Register/ChangePassword", changePassword);
+            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
+            return View("../Register/ChangePassword", changePassword);
         }
 
         //POST: Register/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePasswordAsync(ChangePassword changePassword)
+        public ActionResult ChangePassword(ChangePassword changePassword)
         {
             if (ModelState.IsValid)
             {
-                string email = HttpContext.Session.GetString("Email");
-                string dbPassword = await fDal.GetVolunteerPassword(email);
-                if (dbPassword != changePassword.Password)
-                {
-                    TempData["Message1"] = "Current Password is incorrect!";
-                    return View("../Register/ChangePassword", changePassword);
-                }
-                else
-                {
-                    fDal.UpdateVolunteerPassword(changePassword.ConfirmPassword, changePassword.Email);
-                    TempData["Message1"] = "Password have been successfully changed!";
-                    return View("../Register/ChangePassword", changePassword);
-                }
+                //Update password record to database
+
+                //int customerid = (int)HttpContext.Session.GetInt32("id");
+                //CustomerContext.Update(changePassword, customerid);
+
+                TempData["Message"] = "Password have been successfully changed!";
+
+                return View("../Register/ChangePassword", changePassword);
             }
             else
             {
@@ -192,19 +211,6 @@ namespace FSD_Helpderly.Controllers
             ElderlyPost selectedpost = await fDal.GetForm(id);
             System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
             return View("../Volunteers/ViewPostDetails", selectedpost);            
-        }
-
-        async public Task<IActionResult> SelectedViewPost()
-        {
-            string email = HttpContext.Session.GetString("Email");
-            List<object> SelectedFormId = await fDal.GetVolunteerForms(email);
-            List<ElderlyPost> selectedform = new List<ElderlyPost>();
-            foreach (string formid in SelectedFormId)
-            {
-              ElderlyPost form = await fDal.GetForm(formid);
-                selectedform.Add(form);
-            }
-            return View("../Volunteers/SelectedViewPost",selectedform);
         }
 
         public IActionResult Form()
