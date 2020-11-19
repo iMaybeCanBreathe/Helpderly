@@ -98,6 +98,16 @@ namespace FSD_Helpderly.Controllers
             }
         }
 
+        //Logout Current Session
+        public ActionResult LogOut()
+        {
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+
+            // Redirect logout user to the home page
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Register()
         {
             return View("../Register/Index");
@@ -197,22 +207,6 @@ namespace FSD_Helpderly.Controllers
                 selectedform.Add(form);
             }
             return View("../Volunteers/SelectedViewPost",selectedform);
-        }
-
-
-        public IActionResult AcceptPost(string formId)
-        {
-            string email = HttpContext.Session.GetString("Email");
-            fDal.VolunteerAcceptForm(email, formId);
-            return RedirectToAction("SelectedViewPost");
-        }
-
-
-        public IActionResult CancelPost(string formId)
-        {
-            string email = HttpContext.Session.GetString("Email");
-            fDal.VolunteerCancelForm(email, formId);
-            return RedirectToAction("SelectedViewPost");
         }
 
         public IActionResult Form()

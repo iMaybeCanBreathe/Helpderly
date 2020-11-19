@@ -22,7 +22,7 @@ namespace FSD_Helpderly.Controllers
         {
             if (HttpContext.Session.GetString("Role") != "Volunteer")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
 
             List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");
@@ -34,6 +34,21 @@ namespace FSD_Helpderly.Controllers
             }
 
             return View("../Volunteers/SelectedViewPost", selectedForms);
+        }
+
+        public IActionResult AcceptPost(string formId)
+        {
+            string email = HttpContext.Session.GetString("Email");
+            fDal.VolunteerAcceptForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
+        }
+
+
+        public IActionResult CancelPost(string formId)
+        {
+            string email = HttpContext.Session.GetString("Email");
+            fDal.VolunteerCancelForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
         }
     }
 }
