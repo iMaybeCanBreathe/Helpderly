@@ -145,16 +145,14 @@ namespace FSD_Helpderly.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            //if (HttpContext.Session.GetString("Role") != "Volunteer")
-            //{​​​​​
-            //return RedirectToAction("Login", "Home");
-            //}
-            //else
-            //{
-                ChangePassword changePassword = new ChangePassword();
+            if ((HttpContext.Session.GetString("Role") == null) ||
+                (HttpContext.Session.GetString("Role") != "Volunteer"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            ChangePassword changePassword = new ChangePassword();
                 changePassword.Email = HttpContext.Session.GetString("Email");
                 return View("../Register/ChangePassword", changePassword);
-           // }
         }
 
         //POST: Register/ChangePassword
