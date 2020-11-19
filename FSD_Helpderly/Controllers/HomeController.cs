@@ -68,7 +68,7 @@ namespace FSD_Helpderly.Controllers
             else
             {
                 //if email not found in volunteer, check in org
-                 string OrgPassword = await fDal.GetOrgPassword(email);
+                string OrgPassword = await fDal.GetOrgPassword(email);
                 if (OrgPassword != "")
                 {
                     if (OrgPassword == password)
@@ -91,8 +91,33 @@ namespace FSD_Helpderly.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("CustomError", "Email not found");
-                    return View(login);
+                    //if email not found in volunteer and organisation, check in admin
+                    string AdminPassword = await fDal.GetAdminPassword(email);
+                    if (AdminPassword != "")
+                    {
+                        if (AdminPassword == password)
+                        {
+                            //login to Admin
+
+                            HttpContext.Session.SetString("Role", "Admin");
+
+                            HttpContext.Session.SetString("Email", email);
+
+                            return RedirectToAction("ViewAllPosts");
+                        }
+
+                        else
+                        {
+                            ModelState.AddModelError("AdminError", "Incorrect password");
+                            return View(login);
+                        }
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError("CustomError", "Email not found");
+                        return View(login);
+                    }
                 }
             }
         }
