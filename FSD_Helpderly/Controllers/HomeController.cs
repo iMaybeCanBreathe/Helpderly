@@ -12,7 +12,7 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
-using WEB_Assignment.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -177,6 +177,35 @@ namespace FSD_Helpderly.Controllers
             ElderlyPost selectedpost = await fDal.GetForm(id);
             System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
             return View("../Volunteers/ViewPostDetails", selectedpost);            
+        }
+
+        async public Task<IActionResult> SelectedViewPost()
+        {
+            string email = HttpContext.Session.GetString("Email");
+            List<object> SelectedFormId = await fDal.GetVolunteerForms(email);
+            List<ElderlyPost> selectedform = new List<ElderlyPost>();
+            foreach (string formid in SelectedFormId)
+            {
+              ElderlyPost form = await fDal.GetForm(formid);
+                selectedform.Add(form);
+            }
+            return View("../Volunteers/SelectedViewPost",selectedform);
+        }
+
+
+        public IActionResult AcceptPost(string formId)
+        {
+            string email = HttpContext.Session.GetString("Email");
+            fDal.VolunteerAcceptForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
+        }
+
+
+        public IActionResult CancelPost(string formId)
+        {
+            string email = HttpContext.Session.GetString("Email");
+            fDal.VolunteerCancelForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
         }
 
         public IActionResult Form()

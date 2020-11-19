@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WEB_Assignment.Models
+namespace FSD_Helpderly.Models
 {
     public class LoginViewModel
     {
