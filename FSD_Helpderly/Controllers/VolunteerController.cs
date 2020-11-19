@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FSD_Helpderly.DAL;
 using FSD_Helpderly.Models;
+using Google.Api;
+using Microsoft.AspNetCore.Http;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -18,15 +20,20 @@ namespace FSD_Helpderly.Controllers
 
         async public Task<IActionResult> SelectedViewPost()
         {
-            List<object> SelectedFormId = await fDal.GetVolunteerForms("BBean@yahoo.com");
-            List<ElderlyPost> selectedform = new List<ElderlyPost>();
-            foreach (string formid in SelectedFormId)
+            if (HttpContext.Session.GetString("Role") != "Volunteer")
             {
-                ElderlyPost form = await fDal.GetForm(formid);
-                selectedform.Add(form);
+                return RedirectToAction("Index", "Home");
             }
 
-            return View("../Volunteers/SelectedViewPost", selectedform);
+            List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");
+            List<ElderlyPost> selectedForms = new List<ElderlyPost>();
+            foreach (string formid in selectedFormIds)
+            {
+                ElderlyPost form = await fDal.GetForm(formid);
+                selectedForms.Add(form);
+            }
+
+            return View("../Volunteers/SelectedViewPost", selectedForms);
         }
     }
 }

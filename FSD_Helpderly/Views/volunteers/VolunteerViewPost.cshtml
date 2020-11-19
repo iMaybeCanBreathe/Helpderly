@@ -5,10 +5,18 @@
         <link rel="stylesheet" href="~/css/Package3.css" />
     </head>
     <div class="table-responsive">
-        <div class="search">
+        <div class="unfilteredTable">
             <form asp-action="VolunteerViewPost" method="post">
-                <b>Filer By region:</b>
-                <input type="submit" value="filter" />
+                <label>Filer By Region:</label>
+                <select type="text" id="region">
+                    <option value="All">All</option>
+                    <option value="North">North</option>
+                    <option value="South">South</option>
+                    <option value="East">East</option>
+                    <option value="West">West</option>
+                    <option value="Central">Central</option>
+                </select>
+                <button type="button" id="filter" class="btn btn-outline-primary" onclick="filterRegion()">Filter</button>
             </form>
 
 
@@ -50,5 +58,28 @@
                 </tbody>
             </table>
         </div>
+
     </div>
-    </div>
+</div>
+
+<script>
+    function filterRegion() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("region");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("viewStaff");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[8];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+

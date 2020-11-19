@@ -55,6 +55,9 @@ namespace FSD_Helpderly
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+            app.UseRouting();
+
             app.UseRouting();
 
             app.UseAuthorization();

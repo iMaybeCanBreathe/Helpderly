@@ -28,7 +28,146 @@ namespace FSD_Helpderly.Controllers
         {
             return View();
         }
-        async public Task<IActionResult> VolunteerViewPost()
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        async public Task<ActionResult> Login(LoginViewModel login)
+        {
+            // Read inputs from textboxes             
+            // Email address converted to lowercase
+            string password = login.Password;
+            string email = login.EmailAddress;
+
+            string VolunteerPassword = await fDal.GetVolunteerPassword(email);
+
+            if (VolunteerPassword != "")
+            {
+                if (VolunteerPassword == password)
+                {
+                    //login to vclunteer
+
+                    //Store user role "Volunteer" as a string in session with the key "Role"
+                    HttpContext.Session.SetString("Role", "Volunteer");
+
+                    //Store user email string in session with the key "Email"
+                    HttpContext.Session.SetString("Email", email);
+
+                    return RedirectToAction("ViewAllPosts");
+                }
+                else
+                {
+                    ModelState.AddModelError("CustomError", "Incorrect password");
+                    return View(login);
+                }
+            }
+            else
+            {
+                //if email not found in volunteer, check in org
+                string OrgPassword = await fDal.GetOrgPassword(email);
+                if (OrgPassword != "")
+                {
+                    if (OrgPassword == password)
+                    {
+                        //login to organisation
+
+                        //StoreLocation user role "Organization" as a string in session with the key "Role"
+                        HttpContext.Session.SetString("Role", "Organization");
+
+                        //Store user email string in session with the key "Email"
+                        HttpContext.Session.SetString("Email", email);
+
+                        return RedirectToAction("ViewAllPosts");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CustomError", "Incorrect password");
+                        return View(login);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("CustomError", "Email not found");
+                    return View(login);
+                }
+            }
+        }
+
+        public IActionResult Register()
+        {
+            return View("../Register/Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(Register register)
+        {
+            if (ModelState.IsValid)
+            {
+                string email = register.Email;
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword == "")
+                {
+                    //Add volunteer record to database
+                    fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
+                    TempData["Message"] = "Your Account have been successfully created!";
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    TempData["Message"] = "Email already exist!";
+                    return View("../Register/Index", register);
+                }
+            }
+            else
+            {
+                //Input validation fails, return to the register view to display error message
+                return View("../Register/Index", register);
+            }
+        }
+
+        //GET: Register/ChangePassword
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            //if ((HttpContext.Session.GetString("Role") == null) ||
+            //    (HttpContext.Session.GetString("Role") != "Customer"))
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            ChangePassword changePassword = new ChangePassword();
+            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
+            return View("../Register/ChangePassword", changePassword);
+        }
+
+        //POST: Register/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePassword changePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                //Update password record to database
+
+                //int customerid = (int)HttpContext.Session.GetInt32("id");
+                //CustomerContext.Update(changePassword, customerid);
+
+                TempData["Message"] = "Password have been successfully changed!";
+
+                return View("../Register/ChangePassword", changePassword);
+            }
+            else
+            {
+                return View("../Register/ChangePassword", changePassword);
+            }
+        }
+
+        async public Task<IActionResult> ViewAllPosts()
         {
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
@@ -97,6 +236,5 @@ namespace FSD_Helpderly.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }
