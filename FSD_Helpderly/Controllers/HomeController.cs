@@ -181,7 +181,8 @@ namespace FSD_Helpderly.Controllers
 
         async public Task<IActionResult> SelectedViewPost()
         {
-            List<object> SelectedFormId = await fDal.GetVolunteerForms("BBean@yahoo.com");
+            string email = HttpContext.Session.GetString("Email");
+            List<object> SelectedFormId = await fDal.GetVolunteerForms(email);
             List<ElderlyPost> selectedform = new List<ElderlyPost>();
             foreach (string formid in SelectedFormId)
             {
@@ -194,7 +195,7 @@ namespace FSD_Helpderly.Controllers
 
         public IActionResult AcceptPost(string formId)
         {
-            string email = "BBean@yahoo.com";
+            string email = HttpContext.Session.GetString("Email");
             fDal.VolunteerAcceptForm(email, formId);
             return RedirectToAction("SelectedViewPost");
         }
@@ -202,7 +203,7 @@ namespace FSD_Helpderly.Controllers
 
         public IActionResult CancelPost(string formId)
         {
-            string email = "BBean@yahoo.com";
+            string email = HttpContext.Session.GetString("Email");
             fDal.VolunteerCancelForm(email, formId);
             return RedirectToAction("SelectedViewPost");
         }
