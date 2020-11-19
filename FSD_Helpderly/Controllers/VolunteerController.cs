@@ -22,7 +22,7 @@ namespace FSD_Helpderly.Controllers
         {
             if (HttpContext.Session.GetString("Role") != "Volunteer")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
 
             List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");

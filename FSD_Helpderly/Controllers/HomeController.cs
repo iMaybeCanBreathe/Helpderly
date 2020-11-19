@@ -98,6 +98,16 @@ namespace FSD_Helpderly.Controllers
             }
         }
 
+        //Logout Current Session
+        public ActionResult LogOut()
+        {
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+
+            // Redirect logout user to the home page
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Register()
         {
             return View("../Register/Index");
