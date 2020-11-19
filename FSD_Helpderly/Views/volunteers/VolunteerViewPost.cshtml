@@ -9,7 +9,6 @@
             <form asp-action="VolunteerViewPost" method="post">
                 <label>Filer By Region:</label>
                 <select type="text" id="region">
-                    <option value="All">All</option>
                     <option value="North">North</option>
                     <option value="South">South</option>
                     <option value="East">East</option>
@@ -17,6 +16,7 @@
                     <option value="Central">Central</option>
                 </select>
                 <button type="button" id="filter" class="btn btn-outline-primary" onclick="filterRegion()">Filter</button>
+                <button type="button" id="reset" class="btn btn-outline-secondary" onClick="window.location.reload();">Reset</button>
             </form>
 
 
@@ -80,6 +80,10 @@
                 }
             }
         }
+    }
+
+    function resetFilter() {
+
     }
 </script>
 
