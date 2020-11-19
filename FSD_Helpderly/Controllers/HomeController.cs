@@ -216,8 +216,6 @@ namespace FSD_Helpderly.Controllers
         {
             System.DateTime startTime = System.DateTime.Parse(formData["startTime"]);
             System.DateTime endTime = System.DateTime.Parse(formData["endTime"]);
-            System.Diagnostics.Debug.WriteLine("startTime: " + startTime.ToString());
-            System.Diagnostics.Debug.WriteLine("endTime: " + endTime.ToString());
             List<ElderlyPost> elderlyPostList = await fDal.GetFormsByDate(startTime, endTime);
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
