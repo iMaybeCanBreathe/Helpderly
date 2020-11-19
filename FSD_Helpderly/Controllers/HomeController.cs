@@ -12,6 +12,7 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -25,7 +26,7 @@ namespace FSD_Helpderly.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Form", "Home");
         }
 
         public IActionResult Login()
@@ -150,7 +151,8 @@ namespace FSD_Helpderly.Controllers
                     //Add volunteer record to database
                     fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
                     TempData["Message"] = "Your Account have been successfully created!";
-                    return RedirectToAction("Login");
+                    ModelState.Clear();
+                    return View("../Register/Index");
                 }
                 else
                 {
@@ -169,36 +171,37 @@ namespace FSD_Helpderly.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            //if ((HttpContext.Session.GetString("Role") == null) ||
-            //    (HttpContext.Session.GetString("Role") != "Customer"))
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
+            if (HttpContext.Session.GetString("Role") != "Volunteer")
+            {
+            return RedirectToAction("Login", "Home");
+            }
             ChangePassword changePassword = new ChangePassword();
-            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
+            changePassword.Email = HttpContext.Session.GetString("Email");
             return View("../Register/ChangePassword", changePassword);
         }
 
         //POST: Register/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(ChangePassword changePassword)
+        public async Task<ActionResult> ChangePasswordAsync(ChangePassword changePassword)
         {
             if (ModelState.IsValid)
             {
-                //Update password record to database
-
-                //int customerid = (int)HttpContext.Session.GetInt32("id");
-                //CustomerContext.Update(changePassword, customerid);
-
-                TempData["Message"] = "Password have been successfully changed!";
-
-                return View("../Register/ChangePassword", changePassword);
+                string email = HttpContext.Session.GetString("Email");
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword != changePassword.Password)
+                {
+                    TempData["Message1"] = "Current Password is incorrect!";
+                    return View("../Register/ChangePassword", changePassword);
+                }
+                else
+                {
+                    fDal.UpdateVolunteerPassword(changePassword.ConfirmPassword, changePassword.Email);
+                    TempData["Message1"] = "Password have been successfully changed!";
+                    return View("../Register/ChangePassword", changePassword);
+                }
             }
-            else
-            {
-                return View("../Register/ChangePassword", changePassword);
-            }
+            return View("../Register/ChangePassword", changePassword);
         }
 
         async public Task<IActionResult> ViewAllPosts()
@@ -206,7 +209,13 @@ namespace FSD_Helpderly.Controllers
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
-       async public Task<IActionResult> ViewPostDetails(string id)
+
+        async public Task<IActionResult> ViewFilteredPosts(System.DateTime startTime, System.DateTime endTime)
+        {
+            List<ElderlyPost> elderlyPostList = await fDal.GetFormsByDate(startTime, endTime);
+            return View("../Volunteers/VolunteerViewPost", elderlyPostList);
+        }
+        async public Task<IActionResult> ViewPostDetails(string id)
         {
             ElderlyPost selectedpost = await fDal.GetForm(id);
             System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
@@ -225,8 +234,10 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine(elderlyPost.StartTime.ToString());
-                System.Diagnostics.Debug.WriteLine(elderlyPost.EndTime.ToString());
+                System.Diagnostics.Debug.WriteLine("Input starttime:" + elderlyPost.StartTime.ToString());
+                System.Diagnostics.Debug.WriteLine("Converted starttime:" + Timestamp.FromDateTime(System.DateTime.SpecifyKind(elderlyPost.StartTime, DateTimeKind.Utc)).ToString());
+                System.Diagnostics.Debug.WriteLine("Input endtime" + elderlyPost.EndTime.ToString());
+                System.Diagnostics.Debug.WriteLine("Converted endtime" + Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(elderlyPost.EndTime), DateTimeKind.Utc)).ToString());
                 fDal.AddForm(elderlyPost);
                 return View("FormTY");
             }

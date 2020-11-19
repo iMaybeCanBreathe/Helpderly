@@ -1,18 +1,14 @@
-﻿using System;
+﻿using FSD_Helpderly.Models;
+using Google.Cloud.Firestore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using FSD_Helpderly.Models;
-using Google.Cloud.Firestore;
-using Google.Cloud.Firestore.V1;
-using Google.Type;
-using Microsoft.VisualBasic;
 using DateTime = System.DateTime;
 
 namespace FSD_Helpderly.DAL
-{ 
+{
     public class FirestoreDAL
     {
         private FirestoreDb db;
@@ -289,6 +285,56 @@ namespace FSD_Helpderly.DAL
                 //Convert startTime
                 Timestamp startTime = (Timestamp)docDic["startTime"];
                 System.DateTime convertedStartTime = startTime.ToDateTime();
+
+                ElderlyPost elderlyPost = new ElderlyPost()
+                {
+                    FormID = doc.Id,
+                    AdditionalInfo = (string)docDic["additionalInfo"],
+                    CurrentQuantityVolunteer = (int)(long)docDic["currentQuantityVolunteer"],
+                    Description = (string)docDic["description"],
+                    Email = (string)docDic["email"],
+                    EndTime = convertedEndTIme,
+                    Name = (string)docDic["name"],
+                    Location = (string)docDic["location"],
+                    QuantityVolunteer = (int)(long)docDic["quantityVolunteer"],
+                    MobileNumber = (string)docDic["mobileNumber"],
+                    Region = (string)docDic["region"],
+                    StartTime = convertedStartTime,
+                };
+                forms.Add(elderlyPost);
+            }
+
+            return forms;
+        }
+
+        async public Task<List<ElderlyPost>> GetFormsByDate(DateTime startTime, DateTime endTime)
+        {
+            List<ElderlyPost> forms = new List<ElderlyPost>();
+
+            CollectionReference coll = db.Collection("forms");
+            Query query = coll.WhereGreaterThan("startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(startTime, DateTimeKind.Utc))).WhereLessThan("endTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(endTime, DateTimeKind.Utc)));
+            QuerySnapshot snap = await query.GetSnapshotAsync();
+
+            foreach (DocumentSnapshot doc in snap)
+            {
+                Dictionary<string, object> docDic = doc.ToDictionary();
+
+                //Convert endTime
+                Timestamp docEndTime;
+                System.DateTime? convertedEndTIme;
+                if (docDic["endTime"] != null)
+                {
+                    docEndTime = (Timestamp)docDic["endTime"];
+                    convertedEndTIme = docEndTime.ToDateTime();
+                }
+                else
+                {
+                    convertedEndTIme = null;
+                }
+
+                //Convert startTime
+                Timestamp docStartTime = (Timestamp)docDic["startTime"];
+                System.DateTime convertedStartTime = docStartTime.ToDateTime();
 
                 ElderlyPost elderlyPost = new ElderlyPost()
                 {

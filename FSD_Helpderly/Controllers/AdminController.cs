@@ -52,9 +52,10 @@ namespace FSD_Helpderly.Controllers
                 if (dbPassword == "")
                 {
                     //Add volunteer record to database
-                    fDal.AddVolunteer(register.Email, register.Address, register.OrganizationName, register.Password, register.TelNo);
+                    fDal.AddOrg(register.Email, register.Address, register.OrganizationName, register.Password, register.TelNo);
                     TempData["Message2"] = "Your Account have been successfully created!";
-                    return View("../Admin/OrganizationRegister", register);
+                    ModelState.Clear();
+                    return View("../Admin/OrganizationRegister");
                 }
                 else
                 {
@@ -65,7 +66,7 @@ namespace FSD_Helpderly.Controllers
             else
             {
                 //Input validation fails, return to the register view to display error message
-                return View("../Register/Index", register);
+                return View("../Admin/OrganizationRegister", register);
             }
         }
     }
