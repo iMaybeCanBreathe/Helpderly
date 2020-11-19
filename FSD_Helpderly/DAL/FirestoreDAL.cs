@@ -288,7 +288,22 @@ namespace FSD_Helpderly.DAL
             await coll.AddAsync(form);
         }
 
+        async public void DeleteForm(string formId)
+        {
+            DocumentReference doc = db.Collection("forms").Document(formId);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
 
+            if (snap.Exists)
+            {
+                //Remove form from any existing users
+                List<object> volunteers = (List<object>)snap.ToDictionary()["volunteers"];
+                foreach (string email in volunteers)
+                {
+                    RemoveFormFromVolunteer(email, formId);
+                }
+                await snap.Reference.DeleteAsync();
+            }
+        }
 
         async private void AddVolunteerToForm(string email, string formId)
         {

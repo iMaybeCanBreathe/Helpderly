@@ -82,7 +82,7 @@
                         <div class="col-sm-5">
                             @if (Context.Session.GetString("Role") == "Volunteer")
                             {
-                                <a asp-action="AcceptPost" asp-controller="Home" asp-route-formId="@Model.FormID">Accept Request    </a>
+                                <a asp-action="AcceptPost" asp-controller="Volunteer" asp-route-formId="@Model.FormID">Accept Request    </a>
                             }
                             else if (Context.Session.GetString("Role") == "Admin")
                             {
