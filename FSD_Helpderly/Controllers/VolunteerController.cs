@@ -15,14 +15,14 @@ namespace FSD_Helpderly.Controllers
         private FirestoreDAL fDal = new FirestoreDAL();
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("ViewAllPosts", "Home");
         }
 
         async public Task<IActionResult> SelectedViewPost()
         {
             if (HttpContext.Session.GetString("Role") != "Volunteer")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
 
             List<object> selectedFormIds = await fDal.GetVolunteerForms("BBean@yahoo.com");
@@ -34,6 +34,31 @@ namespace FSD_Helpderly.Controllers
             }
 
             return View("../Volunteers/SelectedViewPost", selectedForms);
+        }
+
+        public IActionResult AcceptPost(string formId)
+        {
+            if (HttpContext.Session.GetString("Role") != "Volunteer")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            string email = HttpContext.Session.GetString("Email");
+            fDal.VolunteerAcceptForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
+        }
+
+
+        public IActionResult CancelPost(string formId)
+        {
+            if (HttpContext.Session.GetString("Role") != "Volunteer")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            string email = HttpContext.Session.GetString("Email");
+            fDal.VolunteerCancelForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
         }
     }
 }

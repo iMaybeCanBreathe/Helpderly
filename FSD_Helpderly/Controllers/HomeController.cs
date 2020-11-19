@@ -26,7 +26,7 @@ namespace FSD_Helpderly.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Form", "Home");
         }
 
         public IActionResult Login()
@@ -98,6 +98,16 @@ namespace FSD_Helpderly.Controllers
             }
         }
 
+        //Logout Current Session
+        public ActionResult LogOut()
+        {
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+
+            // Redirect logout user to the home page
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Register()
         {
             return View("../Register/Index");
@@ -116,7 +126,7 @@ namespace FSD_Helpderly.Controllers
                     //Add volunteer record to database
                     fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
                     TempData["Message"] = "Your Account have been successfully created!";
-                    return RedirectToAction("Login");
+                    return View("../Register/Index", register);
                 }
                 else
                 {
@@ -135,31 +145,36 @@ namespace FSD_Helpderly.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            //if ((HttpContext.Session.GetString("Role") == null) ||
-            //    (HttpContext.Session.GetString("Role") != "Customer"))
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
+            if ((HttpContext.Session.GetString("Role") == null) ||
+                (HttpContext.Session.GetString("Role") != "Volunteer"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             ChangePassword changePassword = new ChangePassword();
-            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
-            return View("../Register/ChangePassword", changePassword);
+                changePassword.Email = HttpContext.Session.GetString("Email");
+                return View("../Register/ChangePassword", changePassword);
         }
 
         //POST: Register/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(ChangePassword changePassword)
+        public async Task<ActionResult> ChangePasswordAsync(ChangePassword changePassword)
         {
             if (ModelState.IsValid)
             {
-                //Update password record to database
-
-                //int customerid = (int)HttpContext.Session.GetInt32("id");
-                //CustomerContext.Update(changePassword, customerid);
-
-                TempData["Message"] = "Password have been successfully changed!";
-
-                return View("../Register/ChangePassword", changePassword);
+                string email = HttpContext.Session.GetString("Email");
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword != changePassword.Password)
+                {
+                    TempData["Message1"] = "Current Password is incorrect!";
+                    return View("../Register/ChangePassword", changePassword);
+                }
+                else
+                {
+                    fDal.UpdateVolunteerPassword(changePassword.ConfirmPassword, changePassword.Email);
+                    TempData["Message1"] = "Password have been successfully changed!";
+                    return View("../Register/ChangePassword", changePassword);
+                }
             }
             else
             {
@@ -190,22 +205,6 @@ namespace FSD_Helpderly.Controllers
                 selectedform.Add(form);
             }
             return View("../Volunteers/SelectedViewPost",selectedform);
-        }
-
-
-        public IActionResult AcceptPost(string formId)
-        {
-            string email = HttpContext.Session.GetString("Email");
-            fDal.VolunteerAcceptForm(email, formId);
-            return RedirectToAction("SelectedViewPost");
-        }
-
-
-        public IActionResult CancelPost(string formId)
-        {
-            string email = HttpContext.Session.GetString("Email");
-            fDal.VolunteerCancelForm(email, formId);
-            return RedirectToAction("SelectedViewPost");
         }
 
         public IActionResult Form()

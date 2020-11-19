@@ -103,9 +103,10 @@ namespace FSD_Helpderly.DAL
             }
         }
 
-        async public void UpdateVolunteerPassword(string ConfirmPassword)
+        async public void UpdateVolunteerPassword(string ConfirmPassword, string Email)
         {
-            DocumentReference doc = db.Collection("users").Document("BBean@yahoo.com");
+            string email = Email;
+            DocumentReference doc = db.Collection("users").Document(email);
             Dictionary<string, object> updates = new Dictionary<string, object>
             {
                 { "password", ConfirmPassword }
@@ -286,6 +287,24 @@ namespace FSD_Helpderly.DAL
 
             await coll.AddAsync(form);
         }
+
+        async public void DeleteForm(string formId)
+        {
+            DocumentReference doc = db.Collection("forms").Document(formId);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            if (snap.Exists)
+            {
+                //Remove form from any existing users
+                List<object> volunteers = (List<object>)snap.ToDictionary()["volunteers"];
+                foreach (string email in volunteers)
+                {
+                    RemoveFormFromVolunteer(email, formId);
+                }
+                await snap.Reference.DeleteAsync();
+            }
+        }
+
         async private void AddVolunteerToForm(string email, string formId)
         {
             DocumentReference doc = db.Collection("forms").Document(formId);
