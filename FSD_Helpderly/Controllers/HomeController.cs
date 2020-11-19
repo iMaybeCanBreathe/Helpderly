@@ -12,6 +12,7 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -48,8 +49,23 @@ namespace FSD_Helpderly.Controllers
               ElderlyPost form = await fDal.GetForm(formid);
                 selectedform.Add(form);
             }
-
             return View("../Volunteers/SelectedViewPost",selectedform);
+        }
+
+
+        public IActionResult AcceptPost(string formId)
+        {
+            string email = "BBean@yahoo.com";
+            fDal.VolunteerAcceptForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
+        }
+
+
+        public IActionResult CancelPost(string formId)
+        {
+            string email = "BBean@yahoo.com";
+            fDal.VolunteerCancelForm(email, formId);
+            return RedirectToAction("SelectedViewPost");
         }
 
         public IActionResult Form()
