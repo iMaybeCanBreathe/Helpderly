@@ -100,8 +100,10 @@ namespace FSD_Helpderly.Controllers
                         {
                             //login to Admin
 
+                            //StoreLocation user role "Organization" as a string in session with the key "Role"
                             HttpContext.Session.SetString("Role", "Admin");
-
+                            
+                            //Store user email string in session with the key "Email"
                             HttpContext.Session.SetString("Email", email);
 
                             return RedirectToAction("ViewAllPosts");
@@ -121,6 +123,14 @@ namespace FSD_Helpderly.Controllers
                     }
                 }
             }
+        }
+
+        public ActionResult LogOut()
+        {
+            // Clear all key-values pairs stored in session state
+            HttpContext.Session.Clear();
+            // Call the Index action of Home controller
+            return RedirectToAction("Login");
         }
 
         public IActionResult Register()
