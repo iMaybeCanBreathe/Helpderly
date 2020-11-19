@@ -12,6 +12,7 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -25,7 +26,7 @@ namespace FSD_Helpderly.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Form", "Home");
         }
 
         public IActionResult Login()
@@ -196,7 +197,13 @@ namespace FSD_Helpderly.Controllers
             List<ElderlyPost> elderlyPostList = await fDal.GetAllForms();
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
-       async public Task<IActionResult> ViewPostDetails(string id)
+
+        async public Task<IActionResult> ViewFilteredPosts(System.DateTime startTime, System.DateTime endTime)
+        {
+            List<ElderlyPost> elderlyPostList = await fDal.GetFormsByDate(startTime, endTime);
+            return View("../Volunteers/VolunteerViewPost", elderlyPostList);
+        }
+        async public Task<IActionResult> ViewPostDetails(string id)
         {
             ElderlyPost selectedpost = await fDal.GetForm(id);
             System.Diagnostics.Debug.WriteLine(selectedpost.QuantityVolunteer);
@@ -215,8 +222,10 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine(elderlyPost.StartTime.ToString());
-                System.Diagnostics.Debug.WriteLine(elderlyPost.EndTime.ToString());
+                System.Diagnostics.Debug.WriteLine("Input starttime:" + elderlyPost.StartTime.ToString());
+                System.Diagnostics.Debug.WriteLine("Converted starttime:" + Timestamp.FromDateTime(System.DateTime.SpecifyKind(elderlyPost.StartTime, DateTimeKind.Utc)).ToString());
+                System.Diagnostics.Debug.WriteLine("Input endtime" + elderlyPost.EndTime.ToString());
+                System.Diagnostics.Debug.WriteLine("Converted endtime" + Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(elderlyPost.EndTime), DateTimeKind.Utc)).ToString());
                 fDal.AddForm(elderlyPost);
                 return View("FormTY");
             }
