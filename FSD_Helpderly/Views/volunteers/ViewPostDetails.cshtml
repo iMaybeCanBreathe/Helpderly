@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+@model FSD_Helpderly.Models.ElderlyPost
+
+@{
+    ViewData["Title"] = "Accept";
+    String date = Model.StartTime.ToString();
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Volunteers.css" />
+</head>
+<h4 class="PageTitle">ViewPostDetails</h4>
+<body>
+    <div class="row box">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            <form asp-action="Accept">
+                <fieldset class="FormContent">
+                    <div class="form-group row">
+                        <label asp-for="@Model.AdditionalInfo"
+                               class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.AdditionalInfo
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Description" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.Description
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.Email
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="EndTime" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.EndTime
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Location" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.Location
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="MobileNumber" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.MobileNumber
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.Name
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="QuantityVolunteer" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.QuantityVolunteer
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.StartTime" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @date
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.Region" class="col-sm-2 col-form-label"></label>
+                        <div class="col-sm-2 col-md-3 form-control-plaintext">
+                            @Model.Region
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-5">
+                            @if (Context.Session.GetString("Role") == "Volunteer")
+                            {
+                                <a asp-action="AcceptPost" asp-controller="Volunteer" asp-route-formId="@Model.FormID">Accept Request    </a>
+                            }
+                            else if (Context.Session.GetString("Role") == "Admin")
+                            {
+                                //<a asp-action="DeletePost" asp-controller="Admin" asp-route-formId="@Model.FormID">Delete Request</a>
+                            }
+                            <a asp-action="ViewAllPosts" asp-controller="Home">Back to List</a>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</body>
