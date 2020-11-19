@@ -208,8 +208,14 @@ namespace FSD_Helpderly.Controllers
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
 
-        async public Task<IActionResult> ViewFilteredPosts(System.DateTime startTime, System.DateTime endTime)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        async public Task<IActionResult> ViewFilteredPosts(IFormCollection formData)
         {
+            System.DateTime startTime = System.DateTime.Parse(formData["startTime"]);
+            System.DateTime endTime = System.DateTime.Parse(formData["endTime"]);
+            System.Diagnostics.Debug.WriteLine("startTime: " + startTime.ToString());
+            System.Diagnostics.Debug.WriteLine("endTime: " + endTime.ToString());
             List<ElderlyPost> elderlyPostList = await fDal.GetFormsByDate(startTime, endTime);
             return View("../Volunteers/VolunteerViewPost", elderlyPostList);
         }
@@ -232,10 +238,6 @@ namespace FSD_Helpderly.Controllers
         {
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine("Input starttime:" + elderlyPost.StartTime.ToString());
-                System.Diagnostics.Debug.WriteLine("Converted starttime:" + Timestamp.FromDateTime(System.DateTime.SpecifyKind(elderlyPost.StartTime, DateTimeKind.Utc)).ToString());
-                System.Diagnostics.Debug.WriteLine("Input endtime" + elderlyPost.EndTime.ToString());
-                System.Diagnostics.Debug.WriteLine("Converted endtime" + Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(elderlyPost.EndTime), DateTimeKind.Utc)).ToString());
                 fDal.AddForm(elderlyPost);
                 return View("FormTY");
             }
