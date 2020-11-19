@@ -55,7 +55,7 @@ namespace FSD_Helpderly.Controllers
                     fDal.AddOrg(register.Email, register.Address, register.OrganizationName, register.Password, register.TelNo);
                     TempData["Message2"] = "Your Account have been successfully created!";
                     ModelState.Clear();
-                    return View(register);
+                    return View("../Admin/OrganizationRegister");
                 }
                 else
                 {
