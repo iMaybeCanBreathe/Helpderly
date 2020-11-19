@@ -19,7 +19,7 @@ namespace FSD_Helpderly.Models
         public string TelNo { get; set; }
 
         [Required]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}")]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Please enter a valid email")]
         [Display(Name = "Email Address")]
         public string Email { get; set; }
 

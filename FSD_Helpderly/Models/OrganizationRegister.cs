@@ -16,6 +16,7 @@ namespace FSD_Helpderly.Models
         public string OrganizationName { get; set; }
 
         [Required]
+        [RegularExpression("(6|8|9)[0-9]{0,7}", ErrorMessage = "Your number must start with 6, 8 or 9.")]
         [Display(Name = "Telephone number")]
         public string TelNo { get; set; }
 

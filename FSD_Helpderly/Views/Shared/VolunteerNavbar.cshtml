@@ -8,19 +8,16 @@
         <div class="navbar-collapse collapse d-sm-inline-flex">
             <ul class="navbar-nav flex-grow-1 mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Form">Form</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ViewAllPosts">View Requests</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ViewAllPosts">View Post</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Volunteer" asp-action="SelectedViewPost">View Selected post</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Volunteer" asp-action="SelectedViewPost">View Your Accepted Requests</a>
                 </li>
             </ul>
             <ul class="navbar-nav flex-grow-1 ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ChangePassword">Change Password</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-controller="Home" asp-action="LogOut">Sign out</a>
                 </li>
