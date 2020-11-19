@@ -1,0 +1,70 @@
+﻿.form-btn {
+    border-radius: 20px;
+    border: black solid 1px;
+    padding: 10px 30px 10px 30px;
+    background-color: Highlight;
+}
+
+.PageTitle {
+    text-align: center;
+    padding: 20px;
+}
+
+.form-group {
+    text-align: center !important;
+}
+
+table {
+    margin: auto;
+    max-width: 1450px !important;
+    text-align: center;
+}
+
+td, tr, th {
+    padding: 5px 20px 5px 20px !important;
+}
+
+th {
+    color: white;
+    background-color: black;
+}
+
+.search {
+    padding: 20px !important;
+    margin: auto;
+    text-align: center;
+}
+
+.btn-div {
+    position: absolute;
+    right: 18%;
+    left: 18%;
+}
+
+input {
+    min-width: 150px !important;
+}
+
+label {
+    min-width: 150px !important;
+}
+
+select {
+    min-width: 150px !important;
+}
+
+button {
+    display: inline-block;
+}
+
+.contaner {
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.box {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 40px;
+}

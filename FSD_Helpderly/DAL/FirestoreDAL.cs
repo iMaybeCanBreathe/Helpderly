@@ -160,6 +160,27 @@ namespace FSD_Helpderly.DAL
 
         /*******************************/
         //                              /
+        //           Admin              /
+        //                              /
+        /*******************************/
+
+        //Returns an empty string "" if email not found
+        async public Task<string> GetAdminPassword(string email)
+        {
+            string password = "";
+            DocumentReference doc = db.Collection("admin").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> admin = snap.ToDictionary();
+                password = (string)admin["password"];
+            }
+
+            return password;
+        }
+
+        /*******************************/
+        //                              /
         //            Forms             /
         //                              /
         /*******************************/
