@@ -157,6 +157,31 @@ namespace FSD_Helpderly.DAL
 
             return password;
         }
+        async public void AddOrg(string email, string address, string organizationname, string password, string telno)
+        {
+            DocumentReference doc = db.Collection("organizationUsers").Document(email);
+            DocumentSnapshot snapshot = await doc.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
+
+            }
+            else
+            {
+                //initialise empty array for forms
+                ArrayList forms = new ArrayList();
+
+                Dictionary<string, object> organization = new Dictionary<string, object>()
+            {
+                {"address", address},
+                {"organizationName", organizationname},
+                {"password", password},
+                {"telno", telno},
+                {"forms", forms }
+            };
+
+                await doc.SetAsync(organization);
+            }
+        }
 
         /*******************************/
         //                              /
@@ -219,7 +244,7 @@ namespace FSD_Helpderly.DAL
                 {
                     FormID = doc.Id,
                     AdditionalInfo = (string)docDic["additionalInfo"],
-                    CurrentQuantityVolunteer = 0,
+                    CurrentQuantityVolunteer = (int)(long)docDic["currentQuantityVolunteer"],
                     Description = (string)docDic["description"],
                     Email = (string)docDic["email"],
                     EndTime = convertedEndTIme,
@@ -269,6 +294,7 @@ namespace FSD_Helpderly.DAL
                 {
                     FormID = doc.Id,
                     AdditionalInfo = (string)docDic["additionalInfo"],
+                    CurrentQuantityVolunteer = (int)(long)docDic["currentQuantityVolunteer"],
                     Description = (string)docDic["description"],
                     Email = (string)docDic["email"],
                     EndTime = convertedEndTIme,
@@ -294,6 +320,7 @@ namespace FSD_Helpderly.DAL
             Dictionary<string, object> form = new Dictionary<string, object>()
             {
                 { "additionalInfo", ePost.AdditionalInfo },
+                { "currentQuantityVolunteer", 0 },
                 { "description", ePost.Description },
                 { "email", ePost.Email },
                 { "endTime", ePost.EndTime == null? null : (Timestamp?)Timestamp.FromDateTime(System.DateTime.SpecifyKind(Convert.ToDateTime(ePost.EndTime), DateTimeKind.Utc)) },
