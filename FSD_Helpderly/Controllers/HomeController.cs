@@ -135,31 +135,38 @@ namespace FSD_Helpderly.Controllers
         [HttpGet]
         public IActionResult ChangePassword()
         {
-            //if ((HttpContext.Session.GetString("Role") == null) ||
-            //    (HttpContext.Session.GetString("Role") != "Customer"))
-            //{
-            //    return RedirectToAction("Index", "Home");
+            //if (HttpContext.Session.GetString("Role") != "Volunteer")
+            //{​​​​​
+            //return RedirectToAction("Login", "Home");
             //}
-            ChangePassword changePassword = new ChangePassword();
-            //changePassword.DatabasePassword = HttpContext.Session.GetString("password");
-            return View("../Register/ChangePassword", changePassword);
+            //else
+            //{
+                ChangePassword changePassword = new ChangePassword();
+                changePassword.Email = HttpContext.Session.GetString("Email");
+                return View("../Register/ChangePassword", changePassword);
+           // }
         }
 
         //POST: Register/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(ChangePassword changePassword)
+        public async Task<ActionResult> ChangePasswordAsync(ChangePassword changePassword)
         {
             if (ModelState.IsValid)
             {
-                //Update password record to database
-
-                //int customerid = (int)HttpContext.Session.GetInt32("id");
-                //CustomerContext.Update(changePassword, customerid);
-
-                TempData["Message"] = "Password have been successfully changed!";
-
-                return View("../Register/ChangePassword", changePassword);
+                string email = HttpContext.Session.GetString("Email");
+                string dbPassword = await fDal.GetVolunteerPassword(email);
+                if (dbPassword != changePassword.Password)
+                {
+                    TempData["Message1"] = "Current Password is incorrect!";
+                    return View("../Register/ChangePassword", changePassword);
+                }
+                else
+                {
+                    fDal.UpdateVolunteerPassword(changePassword.ConfirmPassword, changePassword.Email);
+                    TempData["Message1"] = "Password have been successfully changed!";
+                    return View("../Register/ChangePassword", changePassword);
+                }
             }
             else
             {

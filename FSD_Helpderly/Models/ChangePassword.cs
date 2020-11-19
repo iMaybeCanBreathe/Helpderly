@@ -8,7 +8,7 @@ namespace FSD_Helpderly.Models
 {
     public class ChangePassword
     {
-
+        public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current Password")]
