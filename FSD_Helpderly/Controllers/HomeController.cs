@@ -26,7 +26,7 @@ namespace FSD_Helpderly.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Form", "Home");
         }
 
         public IActionResult Login()
