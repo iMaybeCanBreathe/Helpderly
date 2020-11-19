@@ -126,7 +126,7 @@ namespace FSD_Helpderly.Controllers
                     //Add volunteer record to database
                     fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
                     TempData["Message"] = "Your Account have been successfully created!";
-                    return RedirectToAction("Login");
+                    return View("../Register/Index", register);
                 }
                 else
                 {
