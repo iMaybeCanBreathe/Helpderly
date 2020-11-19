@@ -335,7 +335,7 @@ namespace FSD_Helpderly.DAL
                 Timestamp docStartTime = (Timestamp)docDic["startTime"];
                 System.DateTime convertedStartTime = docStartTime.ToDateTime();
 
-                if (convertedEndTime < endTime && convertedStartTime > startTime)
+                if (DateTime.Compare((DateTime)convertedEndTime, endTime) <= 0 && DateTime.Compare(convertedStartTime, startTime) >= 0)
                 {
                     ElderlyPost elderlyPost = new ElderlyPost()
                     {
