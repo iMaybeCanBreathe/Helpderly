@@ -18,7 +18,7 @@ namespace FSD_Helpderly.DAL
             string path = AppDomain.CurrentDomain.BaseDirectory + @"helpderly-firebase.json";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
 
-            db = FirestoreDb.Create("helpderly");
+            db = FirestoreDb.Create("helpderly")
         }
 
         /*******************************/
