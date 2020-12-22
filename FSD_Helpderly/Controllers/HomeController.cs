@@ -28,6 +28,10 @@ namespace FSD_Helpderly.Controllers
         {
             return RedirectToAction("Form", "Home");
         }
+        public IActionResult About()
+        {
+            return View();
+        }
 
         public IActionResult Login()
         {
