@@ -1,4 +1,12 @@
-﻿#helpForm {
+﻿body {
+    font-family: 'Montserrat', sans-serif;
+    background: no-repeat url("../images/Elderly2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+#helpForm {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
