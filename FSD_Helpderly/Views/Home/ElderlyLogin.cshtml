@@ -2,20 +2,20 @@
 
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "ElderlyLogin";
 }
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
-    <title>Register</title>
+
+    <title>Elderly Login</title>
     <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
 
 </head>
-<h1 class="PageTitle">Login</h1>
+<h1 class="PageTitle">Elderly Login</h1>
 
 <hr />
 <form asp-action="Login" method="post">
@@ -44,6 +44,4 @@
 
         <span class="text-danger">@Html.ValidationMessage("CustomError")</span>
     </fieldset>
-    <!--<a class="nav-link" asp-controller="Home" asp-action="Register">Register As A Volunteer Now!!!</a>-->
 </form>
-
