@@ -40,7 +40,7 @@
 </head>
 <div class="container">
     <form id="helpForm" asp-action="Form" method="post">
-        <h3>Organization Help Form</h3>
+        <h3>Organization Help Form</h3>       
         <fieldset>
             <label asp-for="Name"></label>
             <input asp-for="Name" type="text" id="name" required autofocus>
@@ -94,7 +94,6 @@
             <label asp-for="AdditionalInfo"></label>
             <input asp-for="AdditionalInfo" type="text" id="additionalInfo">
             <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
-
         </fieldset>
         <fieldset>
             <button name="submit" type="submit" id="submit">Submit</button>
