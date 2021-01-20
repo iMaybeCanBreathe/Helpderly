@@ -134,6 +134,81 @@ namespace FSD_Helpderly.DAL
 
         /*******************************/
         //                              /
+        //           Elderly            /
+        //                              /
+        /*******************************/
+
+        async public void GenerateElderlyOTP(string email)
+        {
+            Random generator = new Random();
+            string otp = generator.Next(100000, 1000000).ToString();
+
+            DocumentReference doc = db.Collection("elderly").Document(email);
+            Dictionary<string, object> updates = new Dictionary<string, object>
+            {
+                { "OTP", otp }
+            };
+            await doc.UpdateAsync(updates);
+
+            //TODO: Call sendgrid api to send the otp
+
+        }
+
+        //Returns an empty string "" if email not found
+        async public Task<string> GetElderlyOTP(string email)
+        {
+            string password = "";
+
+            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> volunteer = snap.ToDictionary();
+                password = (string)volunteer["password"];
+            }
+
+            return password;
+        }
+
+        async public Task<List<object>> GetElderlyForms(string email)
+        {
+            List<object> formIds = new List<object>();
+
+            DocumentReference doc = db.Collection("elderly").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                Dictionary<string, object> elderly = snap.ToDictionary();
+                formIds = (List<object>)elderly["forms"];
+            }
+
+            return formIds;
+        }
+
+        async private void AddFormToElderly(string email, string formId)
+        {
+            DocumentReference doc = db.Collection("elderly").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            if (snap.Exists)
+            {
+                await doc.UpdateAsync("forms", FieldValue.ArrayUnion(formId));
+            }
+        }
+
+        async private void RemoveFormFromElderly(string email, string formId)
+        {
+            DocumentReference doc = db.Collection("elderly").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            if (snap.Exists)
+            {
+                await doc.UpdateAsync("forms", FieldValue.ArrayRemove(formId));
+            }
+        }
+
+        /*******************************/
+        //                              /
         //        Organisation          /
         //                              /
         /*******************************/
