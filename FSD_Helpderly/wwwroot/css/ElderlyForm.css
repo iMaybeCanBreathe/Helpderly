@@ -75,14 +75,14 @@ button {
     opacity: 0.5;
 }
 
-    .step.active {
-        opacity: 1;
-    }
+.step.active {
+    opacity: 1;
+}
 
-    /* Mark the steps that are finished and valid: */
-    .step.finish {
-        background-color: #4CAF50;
-    }
+/* Mark the steps that are finished and valid: */
+.step.finish {
+    background-color: #4CAF50;
+}
 
 .tab {
     display: none;
