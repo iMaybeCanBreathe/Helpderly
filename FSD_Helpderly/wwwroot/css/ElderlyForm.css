@@ -87,3 +87,7 @@ button {
 .tab {
     display: none;
 }
+
+input.invalid {
+    background-color: #ffdddd;
+}
