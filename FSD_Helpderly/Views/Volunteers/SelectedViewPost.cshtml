@@ -1,13 +1,15 @@
 ﻿@model IEnumerable<FSD_Helpderly.Models.ElderlyPost>
-    <link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
+<link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
 @if (Model.ToList().Count > 0)
 {
     <head>
         <link rel="stylesheet" href="~/css/Volunteers.css" />
+        <link rel="stylesheet" href="~/css/ViewTable.css" />
     </head>
     <div class="table-responsive">
-        <table id="viewStaff" class="table-striped table-bordered">
-            <thead class="thead-dark">
+        <br />
+        <table class="table-striped table-bordered content-table">
+            <thead class="header">
                 <tr>
                     <th>Name</th>
                     <th>Phone Number</th>
@@ -21,18 +23,18 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.MobileNumber</td>
-                    <td>@item.StartTime</td>
-                    <td>@item.EndTime</td>
-                    <td>@item.Location</td>
-                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
-                    <td>
-                        <a asp-action="CancelPost" asp-controller="Volunteer"
-                           asp-route-formId="@item.FormID">Cancel</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.StartTime</td>
+                        <td>@item.EndTime</td>
+                        <td>@item.Location</td>
+                        <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                        <td>
+                            <a asp-action="CancelPost" asp-controller="Volunteer"
+                               asp-route-formId="@item.FormID">Cancel</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>

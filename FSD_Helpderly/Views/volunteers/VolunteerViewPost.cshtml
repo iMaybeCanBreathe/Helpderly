@@ -4,62 +4,59 @@
     <link rel="stylesheet" href="~/css/Volunteers.css" />
     <link rel="stylesheet" href="~/css/ViewTable.css" />
 </head>
-
-<div>
-    <div class="table-responsive">
-        <div class="unfilteredTable">
-            <form asp-action="ViewFilteredPosts" method="post">
-                <label>Filer By Region:</label>
-                <select type="text" id="region">
-                    <option value="North">North</option>
-                    <option value="South">South</option>
-                    <option value="East">East</option>
-                    <option value="West">West</option>
-                    <option value="Central">Central</option>
-                </select>
-                <button type="button" id="filter" class="btn btn-outline-primary" onclick="filterRegion()">Filter</button>
-                <button type="button" id="reset" class="btn btn-outline-secondary" onClick="window.location.reload();">Reset</button>
-                <br /><br />
+<div class="table-responsive">
+    <div class="Option">
+        <form asp-action="ViewFilteredPosts" class="form" method="post">
+            <label>Filer By Region: </label>
+            <select type="text" id="region">
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="Central">Central</option>
+            </select>
+            <button type="button" id="filter" class="btn btn-outline-primary" onclick="filterRegion()">Filter</button>
+            <button type="button" id="reset" class="btn btn-outline-secondary" onClick="window.location.reload();">Reset</button>
+            
+            <div class="Option2">
                 <label for="startTime">Filter by Start Time</label>
-                <input for="startTime" type="datetime-local" id="startTime" name="startTime" required >
+                <input for="startTime" type="datetime-local" id="startTime" name="startTime" required>
                 <label for="endTime">Filter by End Time</label>
-                <input for="endTime" type="datetime-local" id="endTime" name="endTime" required >
+                <input for="endTime" type="datetime-local" id="endTime" name="endTime" required>
                 <button type="submit" value="ViewFilteredPosts" class="btn btn-outline-primary">Filter</button>
-            </form>
-
-
-            <table id="viewStaff" class="table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Start Time</th>
-                        <th>EndTime <br />
-                        <th>Region</th>
-                        <th>Quantity Volunteer</th>
-                        <th>View Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Name</td>
-                            <td>@item.StartTime</td>
-                            <td>@item.EndTime</td>
-                            <td>@item.Region</td>
-                            <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
-                            <td>
-                                <a asp-action="ViewPostDetails" asp-controller="Home"
-                                   asp-route-id="@item.FormID">View</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
+            </div>
+        </form>
     </div>
+    <table class="table-striped table-bordered content-table">
+        <thead class="header">
+            <tr>
+                <th>Name</th>
+                <th>Start Time</th>
+                <th>EndTime<br />
+                <th>Region</th>
+                <th>Quantity Volunteer</th>
+                <th>View Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    <td>@item.Region</td>
+                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                    <td>
+                        <a asp-action="ViewPostDetails" asp-controller="Home"
+                           asp-route-id="@item.FormID">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
 
 <script>
     function filterRegion() {

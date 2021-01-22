@@ -8,10 +8,12 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/Volunteers.css" />
+    <link rel="stylesheet" href="~/css/ViewTable.css" />
 </head>
 
 <div class="table-responsive">
-    <table id="viewStaff" class="table-striped table-bordered">
+    <br />
+    <table id="viewStaff" class="table-striped table-bordered content-table">
         <tbody>
             <tr>
                 <td>Name: </td>
@@ -47,19 +49,17 @@
             </tr>
         </tbody>
     </table>
-    <div class="row">
-        <div class="col-sm-5"></div>
-        <div class="col-sm-3">
-            @if (Context.Session.GetString("Role") == "Volunteer")
-            {
+    <br />
+    <div class="Option">
+        @if (Context.Session.GetString("Role") == "Volunteer")
+        {
 
-                <a asp-action="AcceptPost" asp-controller="Volunteer" asp-route-formId="@Model.FormID" class="btn btn-outline-primary">Accept Request</a>
-            }
-            else if (Context.Session.GetString("Role") == "Admin")
-            {
-                <a asp-action="DeletePost" asp-controller="Admin" asp-route-formId="@Model.FormID" class="btn btn-danger">Delete Request</a>
-            }
-            <a asp-action="ViewAllPosts" asp-controller="Home">Back to List</a></div>
-        <div class="col-sm-5"></div>
+            <a asp-action="AcceptPost" asp-controller="Volunteer" asp-route-formId="@Model.FormID" class="btn btn-outline-primary">Accept Request</a>
+        }
+        else if (Context.Session.GetString("Role") == "Admin")
+        {
+            <a asp-action="DeletePost" asp-controller="Admin" asp-route-formId="@Model.FormID" class="btn btn-danger">Delete Request</a>
+        }
+        <a asp-action="ViewAllPosts" asp-controller="Home" class="btn btn-outline-primary">Back to List</a>
     </div>
 </div>
