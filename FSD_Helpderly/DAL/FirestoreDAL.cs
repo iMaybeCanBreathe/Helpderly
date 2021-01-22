@@ -1,11 +1,14 @@
 ﻿using FSD_Helpderly.Models;
 using Google.Cloud.Firestore;
+using SendGrid;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DateTime = System.DateTime;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace FSD_Helpderly.DAL
 {
@@ -151,7 +154,14 @@ namespace FSD_Helpderly.DAL
             await doc.UpdateAsync(updates);
 
             //TODO: Call sendgrid api to send the otp
-
+            /*var sgApiKey = Environment.GetEnvironmentVariable("SendGridKey");
+            var sendGridClient = new SendGridClient(sgApiKey);
+            var from = new EmailAddress("helpderly@gmail.com", "Helpderly");
+            var subject = "Your Helpderly OTP";
+            var to = new EmailAddress(email);
+            var plainTextContent = "Your Helpderly One-Time Password is" + otp;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent);
+            var response = await sendGridClient.SendEmailAsync(msg);*/
         }
 
         //Returns an empty string "" if email not found
