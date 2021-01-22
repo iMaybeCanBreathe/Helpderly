@@ -141,27 +141,53 @@ namespace FSD_Helpderly.DAL
         //                              /
         /*******************************/
 
+        //if elderly email exists, send otp to elderly and update otp in firestore
+        //if doesn't exist, create elderly in firestore and send otp
         async public void GenerateElderlyOTP(string email)
         {
             Random generator = new Random();
             string otp = generator.Next(100000, 1000000).ToString();
 
             DocumentReference doc = db.Collection("elderly").Document(email);
-            Dictionary<string, object> updates = new Dictionary<string, object>
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+            if (snap.Exists) //update current document
             {
-                { "OTP", otp }
-            };
-            await doc.UpdateAsync(updates);
+                Dictionary<string, object> updates = new Dictionary<string, object>
+                {
+                    { "OTP", otp }
+                };
 
+                await doc.UpdateAsync(updates);
+            }
+            else //create new document
+            {
+                //initialise empty array for forms
+                ArrayList forms = new ArrayList();
+
+                Dictionary<string, object> elderly = new Dictionary<string, object>()
+                {
+                    {"OTP", otp},
+                    {"forms", forms }
+                };
+
+                await doc.SetAsync(elderly);
+            }
+            
+            SendEmailOTP(email, otp);
+        }
+
+        async private void SendEmailOTP(string email, string otp)
+        {
             //TODO: Call sendgrid api to send the otp
-            /*var sgApiKey = Environment.GetEnvironmentVariable("SendGridKey");
+            var sgApiKey = "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";
             var sendGridClient = new SendGridClient(sgApiKey);
             var from = new EmailAddress("helpderly@gmail.com", "Helpderly");
             var subject = "Your Helpderly OTP";
             var to = new EmailAddress(email);
-            var plainTextContent = "Your Helpderly One-Time Password is" + otp;
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent);
-            var response = await sendGridClient.SendEmailAsync(msg);*/
+            var plainTextContent = "Your Helpderly One-Time Password is " + otp;
+            var htmlContent = "Your Helpderly Log-in OTP is <strong>" + otp + "</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await sendGridClient.SendEmailAsync(msg);
         }
 
         //Returns an empty string "" if email not found
