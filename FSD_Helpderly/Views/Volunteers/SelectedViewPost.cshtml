@@ -1,12 +1,13 @@
-﻿@model IEnumerable<FSD_Helpderly.Models.ElderlyPost>
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<FSD_Helpderly.Models.ElderlyPost>
 <link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
 @if (Model.ToList().Count > 0)
 {
-<head>
-    <link rel="stylesheet" href="~/css/Volunteers.css" />
-    <link rel="stylesheet" href="~/css/ViewTable.css" />
-    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
-</head>
+    <head>
+        <link rel="stylesheet" href="~/css/Volunteers.css" />
+        <link rel="stylesheet" href="~/css/ViewTable.css" />
+        <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
+    </head>
     <div class="table-responsive">
         <br />
         <table class="table-striped table-bordered content-table">
@@ -18,7 +19,11 @@
                     <th>EndTime <br />
                     <th>Address</th>
                     <th>Quantity Volunteer</th>
-                    <th>View Details</th>
+                    <th>Cancel</th>
+                    @if (Context.Session.GetString("Role") == "Volunteer")
+                    {
+                        <th>Change Status</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -32,9 +37,24 @@
                         <td>@item.Location</td>
                         <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
                         <td>
-                            <a asp-action="CancelPost" asp-controller="Volunteer"
-                               asp-route-formId="@item.FormID">Cancel</a>
+                            @if (Context.Session.GetString("Role") == "Volunteer")
+                            {
+                                <a asp-action="CancelPost" asp-controller="Volunteer"
+                                   asp-route-formId="@item.FormID">Cancel</a>
+                            }
+                            @if (Context.Session.GetString("Role") == "Elderly")
+                            {
+                                <a asp-action="CancelPost" asp-controller="Elderly"
+                                   asp-route-formId="@item.FormID">Cancel</a>
+                            }
                         </td>
+                        @if (Context.Session.GetString("Role") == "Volunteer")
+                        {
+                            <td>
+                                <a asp-action="SetPostDone" asp-controller="Volunteer"
+                                   asp-route-formId="@item.FormID">Set to Done</a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>

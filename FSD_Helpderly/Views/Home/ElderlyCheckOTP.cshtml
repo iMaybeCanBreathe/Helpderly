@@ -2,7 +2,7 @@
 
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "ElderlyLogin";
+    ViewData["Title"] = "Check your email for the OTP!";
 }
 
 <head>
@@ -18,13 +18,21 @@
 <h1 class="PageTitle">Elderly Login</h1>
 
 <hr />
-<form asp-action="Login" method="post">
+<form asp-action="ElderlyCheckOTP" method="post">
     <fieldset class="FormContent">
         <div class="form-group row">
             <label asp-for="EmailAddress" class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 col-md-5">
-                <input asp-for="EmailAddress" class="form-control" />
+                <input asp-for="EmailAddress" class="form-control" readonly />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label asp-for="Password" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
         </div>
 

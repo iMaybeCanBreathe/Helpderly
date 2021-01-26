@@ -1,8 +1,8 @@
-﻿@model FSD_Helpderly.Models.LoginViewModel
+﻿@model FSD_Helpderly.Models.ElderlyGetOTPViewModel
 
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "ElderlyLogin";
+    ViewData["Title"] = "Get OTP";
 }
 
 <head>
@@ -18,7 +18,7 @@
 <h1 class="PageTitle">Elderly Login</h1>
 
 <hr />
-<form asp-action="Login" method="post">
+<form asp-action="ElderlyGetOTP" method="post">
     <fieldset class="FormContent">
         <div class="form-group row">
             <label asp-for="EmailAddress" class="col-sm-3 col-form-label"></label>

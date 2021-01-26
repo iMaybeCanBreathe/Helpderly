@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<FSD_Helpderly.Models.ElderlyPost>
+<link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
+@if (Model.ToList().Count > 0)
+{
+    <head>
+        <link rel="stylesheet" href="~/css/Volunteers.css" />
+        <link rel="stylesheet" href="~/css/ViewTable.css" />
+        <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
+    </head>
+    <div class="table-responsive">
+        <br />
+        <table class="table-striped table-bordered content-table">
+            <thead class="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Start Time</th>
+                    <th>EndTime <br />
+                    <th>Address</th>
+                    <th>Quantity Volunteer</th>
+                    <th>Change Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.MobileNumber</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    <td>@item.Location</td>
+                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                    @if (Context.Session.GetString("Role") == "Volunteer")
+                    {
+                        <td>
+                            <a asp-action="SetPostOngoing" asp-controller="Volunteer"
+                                asp-route-formId="@item.FormID">
+                                Set to Ongoing
+                            </a>
+                        </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}
