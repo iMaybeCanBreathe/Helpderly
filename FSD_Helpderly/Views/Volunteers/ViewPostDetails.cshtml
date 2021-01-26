@@ -48,6 +48,10 @@
                 <td>Quantity Volunteer</td>
                 <td>@Model.CurrentQuantityVolunteer / @Model.QuantityVolunteer</td>
             </tr>
+            <tr>
+                <td>Status</td>
+                <td>@(char.ToUpper(Model.Status[0]) + Model.Status.Substring(1))</td>
+            </tr>
         </tbody>
     </table>
     <br />
