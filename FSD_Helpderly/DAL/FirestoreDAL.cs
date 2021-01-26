@@ -167,7 +167,11 @@ namespace FSD_Helpderly.DAL
                 Dictionary<string, object> elderly = new Dictionary<string, object>()
                 {
                     {"OTP", otp},
-                    {"forms", forms }
+                    {"forms", forms },
+                    {"location", "" },
+                    {"mobileNumber", null },
+                    {"name", "" },
+                    {"region", "" },
                 };
 
                 await doc.SetAsync(elderly);
@@ -179,7 +183,7 @@ namespace FSD_Helpderly.DAL
         async private void SendEmailOTP(string email, string otp)
         {
             //TODO: Call sendgrid api to send the otp
-            var sgApiKey = "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";
+            var sgApiKey = "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"; //Yes, this is super insecure. But I have no other choice. 
             var sendGridClient = new SendGridClient(sgApiKey);
             var from = new EmailAddress("helpderly@gmail.com", "Helpderly");
             var subject = "Your Helpderly OTP";
@@ -195,12 +199,12 @@ namespace FSD_Helpderly.DAL
         {
             string password = "";
 
-            DocumentReference doc = db.Collection("users").Document(email);
+            DocumentReference doc = db.Collection("elderly").Document(email);
             DocumentSnapshot snap = await doc.GetSnapshotAsync();
             if (snap.Exists)
             {
-                Dictionary<string, object> volunteer = snap.ToDictionary();
-                password = (string)volunteer["password"];
+                Dictionary<string, object> elderly = snap.ToDictionary();
+                password = (string)elderly["OTP"];
             }
 
             return password;
@@ -221,7 +225,7 @@ namespace FSD_Helpderly.DAL
             return formIds;
         }
 
-        async private void AddFormToElderly(string email, string formId)
+        async public void AddFormToElderly(string email, string formId)
         {
             DocumentReference doc = db.Collection("elderly").Document(email);
             DocumentSnapshot snap = await doc.GetSnapshotAsync();
@@ -232,7 +236,7 @@ namespace FSD_Helpderly.DAL
             }
         }
 
-        async private void RemoveFormFromElderly(string email, string formId)
+        async public void RemoveFormFromElderly(string email, string formId)
         {
             DocumentReference doc = db.Collection("elderly").Document(email);
             DocumentSnapshot snap = await doc.GetSnapshotAsync();
@@ -243,14 +247,51 @@ namespace FSD_Helpderly.DAL
             }
         }
 
-        /*******************************/
-        //                              /
-        //        Organisation          /
-        //                              /
-        /*******************************/
+        async public void UpdateElderlyDetails(ElderlyPost elderlyPost)
+        {
+            DocumentReference doc = db.Collection("elderly").Document(elderlyPost.Email);
+            Dictionary<string, object> updates = new Dictionary<string, object>
+            {
+                {"location", elderlyPost.Location },
+                {"mobileNumber", elderlyPost.MobileNumber },
+                {"name", elderlyPost.Name },
+                {"region", elderlyPost.Region },
+            };
+            await doc.UpdateAsync(updates);
+        }
 
-        //Returns an empty string "" if email not found
-        async public Task<string> GetOrgPassword(string email)
+        async public Task<ElderlyPost> GetElderlyDetails(string email)
+        {
+            DocumentReference doc = db.Collection("elderly").Document(email);
+            DocumentSnapshot snap = await doc.GetSnapshotAsync();
+
+            ElderlyPost elderlyPost = new ElderlyPost();
+
+            if (snap.Exists)
+            {
+                Dictionary<string, object> docDic = snap.ToDictionary();
+
+                elderlyPost = new ElderlyPost()
+                {
+                    Email = email,
+                    Name = (string)docDic["name"],
+                    Location = (string)docDic["location"],
+                    MobileNumber = (string)docDic["mobileNumber"],
+                    Region = (string)docDic["region"],
+                };
+            }
+
+            return elderlyPost;
+        }
+
+            /*******************************/
+            //                              /
+            //        Organisation          /
+            //                              /
+            /*******************************/
+
+            //Returns an empty string "" if email not found
+            async public Task<string> GetOrgPassword(string email)
         {
             string password = "";
 
@@ -360,6 +401,7 @@ namespace FSD_Helpderly.DAL
                     QuantityVolunteer = (int)(long)docDic["quantityVolunteer"],
                     MobileNumber = (string)docDic["mobileNumber"],
                     Region = (string)docDic["region"],
+                    Status = (string)docDic["status"],
                     StartTime = convertedStartTime,
                 };
             }
@@ -410,6 +452,7 @@ namespace FSD_Helpderly.DAL
                     QuantityVolunteer = (int)(long)docDic["quantityVolunteer"],
                     MobileNumber = (string)docDic["mobileNumber"],
                     Region = (string)docDic["region"],
+                    Status = (string)docDic["status"],
                     StartTime = convertedStartTime,
                 };
                 forms.Add(elderlyPost);
@@ -461,6 +504,7 @@ namespace FSD_Helpderly.DAL
                         QuantityVolunteer = (int)(long)docDic["quantityVolunteer"],
                         MobileNumber = (string)docDic["mobileNumber"],
                         Region = (string)docDic["region"],
+                        Status = (string)docDic["status"],
                         StartTime = convertedStartTime,
                     };
                     forms.Add(elderlyPost);
@@ -470,7 +514,7 @@ namespace FSD_Helpderly.DAL
             return forms;
         }
 
-        async public void AddForm(ElderlyPost ePost)
+        async public Task<string> AddForm(ElderlyPost ePost)
         {
             CollectionReference coll = db.Collection("forms");
             //initlialise empty array for volunteers
@@ -489,10 +533,12 @@ namespace FSD_Helpderly.DAL
                 { "quantityVolunteer", ePost.QuantityVolunteer },
                 { "region", ePost.Region },
                 { "startTime", Timestamp.FromDateTime(System.DateTime.SpecifyKind(ePost.StartTime, DateTimeKind.Utc)) },
+                { "status", "ongoing"},
                 { "volunteers", volunteers},
             };
 
-            await coll.AddAsync(form);
+            DocumentReference newForm = await coll.AddAsync(form);
+            return newForm.Id;
         }
 
         async public void DeleteForm(string formId)
@@ -542,6 +588,18 @@ namespace FSD_Helpderly.DAL
 
                 await doc.UpdateAsync("currentQuantityVolunteer", volunteers.Count());
             }
+        }
+        
+        //update form status. pass in "true" for done, "false" for ongoing
+        async public void UpdateFormStatus(string formId, bool done)
+        {
+            DocumentReference doc = db.Collection("forms").Document(formId);
+            string status = done ? "done" : "ongoing";
+            Dictionary<string, object> updates = new Dictionary<string, object>
+            {
+                { "status", status }
+            };
+            await doc.UpdateAsync(updates);
         }
 
         /*******************************/

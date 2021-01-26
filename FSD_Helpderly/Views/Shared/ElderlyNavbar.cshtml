@@ -1,6 +1,6 @@
 ﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent border-bottom box-shadow mb-3">
     <div class="container">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Helpderly</a>
+        <a class="navbar-brand" asp-area="" asp-controller="Elderly" asp-action="Index">Helpderly</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,18 +8,15 @@
         <div class="navbar-collapse collapse d-sm-inline-flex">
             <ul class="navbar-nav flex-grow-1 mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Elderly" asp-action="Form">Get Help</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ViewAllPosts">View Requests</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Elderly" asp-action="ViewActivePosts">View Requests</a>
                 </li>
             </ul>
             <ul class="navbar-nav flex-grow-1 ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ElderlyGetOTP">Elderly Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Volunteer/Admin Login</a>
+                    <a class="nav-link text-dark" asp-controller="Home" asp-action="LogOut">Sign out</a>
                 </li>
             </ul>
         </div>

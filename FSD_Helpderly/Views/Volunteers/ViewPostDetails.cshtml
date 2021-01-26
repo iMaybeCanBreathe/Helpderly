@@ -9,6 +9,7 @@
 <head>
     <link rel="stylesheet" href="~/css/Volunteers.css" />
     <link rel="stylesheet" href="~/css/ViewTable.css" />
+    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
 </head>
 
 <div class="table-responsive">
@@ -46,6 +47,10 @@
             <tr>
                 <td>Quantity Volunteer</td>
                 <td>@Model.CurrentQuantityVolunteer / @Model.QuantityVolunteer</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>@(char.ToUpper(Model.Status[0]) + Model.Status.Substring(1))</td>
             </tr>
         </tbody>
     </table>

@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="~/css/Volunteers.css" />
     <link rel="stylesheet" href="~/css/ViewTable.css" />
+    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
 </head>
 <div class="table-responsive">
     <div class="Option">
@@ -35,23 +36,25 @@
                 <th>EndTime<br />
                 <th>Region</th>
                 <th>Quantity Volunteer</th>
+                <th>Status</th>
                 <th>View Details</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.StartTime</td>
-                    <td>@item.EndTime</td>
-                    <td>@item.Region</td>
-                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
-                    <td>
-                        <a asp-action="ViewPostDetails" asp-controller="Home"
-                           asp-route-id="@item.FormID">View</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.StartTime</td>
+                <td>@item.EndTime</td>
+                <td>@item.Region</td>
+                <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                <td>@(char.ToUpper(item.Status[0]) + item.Status.Substring(1))</td>
+                <td>
+                    <a asp-action="ViewPostDetails" asp-controller="Home"
+                       asp-route-id="@item.FormID">View</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

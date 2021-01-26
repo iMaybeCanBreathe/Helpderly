@@ -13,6 +13,7 @@ using Google.Cloud.Firestore;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Routing;
 
 namespace FSD_Helpderly.Controllers
 {
@@ -26,11 +27,57 @@ namespace FSD_Helpderly.Controllers
         }
         public IActionResult Index()
         {
-            return RedirectToAction("Form", "Home");
+            return RedirectToAction("About", "Home");
         }
         public IActionResult About()
         {
             return View();
+        }
+        public IActionResult ElderlyGetOTP()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ElderlyGetOTP(ElderlyGetOTPViewModel login)
+        {
+            string email = login.EmailAddress;
+
+            fDal.GenerateElderlyOTP(email);
+
+            return RedirectToAction("ElderlyCheckOTP", "Home", new { email = email });
+        }
+
+        public IActionResult ElderlyCheckOTP(string email)
+        {
+            LoginViewModel loginView = new LoginViewModel {EmailAddress = email, Password = "" };
+            return View(loginView);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        async public Task<ActionResult> ElderlyCheckOTP(LoginViewModel login)
+        {
+            string otp = login.Password;
+            string email = login.EmailAddress;
+
+            string elderlyOTP = await fDal.GetElderlyOTP(email);
+            if (otp == elderlyOTP)
+            {
+                //Store user role "Elderly" as a string in session with the key "Role"
+                HttpContext.Session.SetString("Role", "Elderly");
+
+                //Store user email string in session with the key "Email"
+                HttpContext.Session.SetString("Email", email);
+
+                return RedirectToAction("Form", "Elderly");
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", "Incorrect OTP!");
+                return View(login);
+            }
         }
 
         public IActionResult Login()
@@ -193,28 +240,6 @@ namespace FSD_Helpderly.Controllers
         {
             ElderlyPost selectedpost = await fDal.GetForm(id);
             return View("../Volunteers/ViewPostDetails", selectedpost);            
-        }
-
-        public IActionResult Form()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Form(ElderlyPost elderlyPost)
-        {
-            if (ModelState.IsValid)
-            {
-                fDal.AddForm(elderlyPost);
-                return View("FormTY");
-            }
-
-            else
-            {
-                return View("Form", elderlyPost);
-            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

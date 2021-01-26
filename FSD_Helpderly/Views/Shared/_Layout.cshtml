@@ -28,6 +28,11 @@
             @await Html.PartialAsync("AdminNavbar.cshtml")
         }
 
+        else if (Context.Session.GetString("Role") == "Elderly")
+        {
+            @await Html.PartialAsync("ElderlyNavbar.cshtml")
+        }
+
         else
         {
             @await Html.PartialAsync("DefaultNavbar.cshtml")
