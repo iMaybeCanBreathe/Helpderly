@@ -1,5 +1,6 @@
 ﻿body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
     background: no-repeat url("../images/Elderly2.jpg");
     background-size: cover;
     background-position: center;
@@ -49,15 +50,20 @@ select {
 button {
     display: inline-block;
 }
-
-.container {
-    border-radius: 10px;
-    background-color: #f2f2f2;
-    padding: 20px;
-}
-
 .box {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 40px;
+}
+
+.login-form {
+    border-radius: 25px;
+    position: relative;
+    z-index: 1;
+    background: #DEF2F1;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
