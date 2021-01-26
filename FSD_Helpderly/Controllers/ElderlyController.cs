@@ -76,7 +76,7 @@ namespace FSD_Helpderly.Controllers
 
         public IActionResult CancelPost(string formId)
         {
-            if (HttpContext.Session.GetString("Role") != "Volunteer")
+            if (HttpContext.Session.GetString("Role") != "Elderly")
             {
                 return RedirectToAction("Login", "Home");
             }
@@ -84,7 +84,7 @@ namespace FSD_Helpderly.Controllers
             string email = HttpContext.Session.GetString("Email");
             fDal.RemoveFormFromElderly(email, formId);
             fDal.DeleteForm(formId);
-            return RedirectToAction("SelectedViewPost");
+            return RedirectToAction("ViewActivePosts");
         }
     }
 }
