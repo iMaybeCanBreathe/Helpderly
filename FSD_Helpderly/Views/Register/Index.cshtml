@@ -4,66 +4,71 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
+    <link rel="stylesheet" type="text/css" href="~/css/Volunteers.css">
 
-        <title>Register</title>
-        <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
-        <!--<script src="js\Scripts.js" defer></script>        Call in JavaScript"-->
+    <title>Register</title>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+    <!--<script src="js\Scripts.js" defer></script>        Call in JavaScript"-->
 
-    </head>
-<h1 class="PageTitle">Register</h1>
+</head>
 
-<hr />
-<form asp-action="Register">
-    <fieldset class="FormContent">
-        <div class="form-group row">
-            <label asp-for="VolunteerName" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 col-md-5">
-                <input asp-for="VolunteerName" class="form-control" id="VolunteerName" />
-                <span asp-validation-for="VolunteerName" class="text-danger"></span>
+<div class="register-form">
+    <h1 class="PageTitle">Volunteer Registration</h1>
+
+    <hr />
+    <form asp-action="Register">
+        <fieldset class="FormContent">
+            <div class="form-group row">
+                <label asp-for="VolunteerName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 col-md-5">
+                    <input asp-for="VolunteerName" class="form-control" id="VolunteerName" />
+                    <span asp-validation-for="VolunteerName" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="Nationality" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 col-md-5">
-                <input asp-for="Nationality" class="form-control" id="Nationality" />
-                <span asp-validation-for="Nationality" class="text-danger"></span>
+            <div class="form-group row">
+                <label asp-for="Nationality" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 col-md-5">
+                    <input asp-for="Nationality" class="form-control" id="Nationality" />
+                    <span asp-validation-for="Nationality" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="TelNo" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 col-md-5">
-                <input asp-for="TelNo" class="form-control" id="TelNo" />
-                <span asp-validation-for="TelNo" class="text-danger"></span>
+            <div class="form-group row">
+                <label asp-for="TelNo" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 col-md-5">
+                    <input asp-for="TelNo" class="form-control" id="TelNo" />
+                    <span asp-validation-for="TelNo" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="Email" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 col-md-5">
-                <input asp-for="Email" class="form-control" id="email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 col-md-5">
+                    <input asp-for="Email" class="form-control" id="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="Password" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 col-md-5">
-                <input asp-for="Password" type="password" class="form-control" id="password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="form-group row">
+                <label asp-for="Password" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 col-md-5">
+                    <input asp-for="Password" type="password" class="form-control" id="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-9 offset-sm-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group row">
+                <div class="col-sm-9 offset-sm-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
             </div>
-        </div>
-        <span style="color:red;">@TempData["Message"]</span>
-    </fieldset>
-</form>
+            <span style="color:red;">@TempData["Message"]</span>
+        </fieldset>
+    </form>
+</div>
+
+
 <script>
     //Maximum birthDate is today
     birthdateId = document.getElementById("BirthDateID")
