@@ -42,16 +42,23 @@ namespace FSD_Helpderly.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ElderlyGetOTP(ElderlyGetOTPViewModel login)
         {
-            string email = login.EmailAddress;
+            if (ModelState.IsValid)
+            {
+                string email = login.EmailAddress;
 
-            fDal.GenerateElderlyOTP(email);
+                fDal.GenerateElderlyOTP(email);
 
-            return RedirectToAction("ElderlyCheckOTP", "Home", new { email = email });
+                return RedirectToAction("ElderlyCheckOTP", "Home", new { email = email });
+            }
+            else
+            {
+                return View(login);
+            }
         }
 
         public IActionResult ElderlyCheckOTP(string email)
         {
-            LoginViewModel loginView = new LoginViewModel {EmailAddress = email, Password = "" };
+            LoginViewModel loginView = new LoginViewModel { EmailAddress = email, Password = "" };
             return View(loginView);
         }
 
@@ -59,23 +66,30 @@ namespace FSD_Helpderly.Controllers
         [ValidateAntiForgeryToken]
         async public Task<ActionResult> ElderlyCheckOTP(LoginViewModel login)
         {
-            string otp = login.Password;
-            string email = login.EmailAddress;
-
-            string elderlyOTP = await fDal.GetElderlyOTP(email);
-            if (otp == elderlyOTP)
+            if (ModelState.IsValid)
             {
-                //Store user role "Elderly" as a string in session with the key "Role"
-                HttpContext.Session.SetString("Role", "Elderly");
+                string otp = login.Password;
+                string email = login.EmailAddress;
 
-                //Store user email string in session with the key "Email"
-                HttpContext.Session.SetString("Email", email);
+                string elderlyOTP = await fDal.GetElderlyOTP(email);
+                if (otp == elderlyOTP)
+                {
+                    //Store user role "Elderly" as a string in session with the key "Role"
+                    HttpContext.Session.SetString("Role", "Elderly");
 
-                return RedirectToAction("Form", "Elderly");
+                    //Store user email string in session with the key "Email"
+                    HttpContext.Session.SetString("Email", email);
+
+                    return RedirectToAction("Form", "Elderly");
+                }
+                else
+                {
+                    ModelState.AddModelError("CustomError", "Incorrect OTP!");
+                    return View(login);
+                }
             }
             else
             {
-                ModelState.AddModelError("CustomError", "Incorrect OTP!");
                 return View(login);
             }
         }
