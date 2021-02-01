@@ -28,7 +28,9 @@ table {
     max-width: 1450px !important;
     text-align: center;
 }
-
+h1 {
+    text-align: center;
+}
 .btn-div {
     position: absolute;
     right: 18%;

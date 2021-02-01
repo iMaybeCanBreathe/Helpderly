@@ -6,6 +6,7 @@
     <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
 </head>
 <div class="table-responsive">
+    <h1>List of Elderyly Request</h1>
     <div class="Option">
         <form asp-action="ViewFilteredPosts" class="form" method="post">
             <label>Filer By Region: </label>
@@ -18,7 +19,7 @@
             </select>
             <button type="button" id="filter" class="btn btn-outline-primary" onclick="filterRegion()">Filter</button>
             <button type="button" id="reset" class="btn btn-outline-secondary" onClick="window.location.reload();">Reset</button>
-            
+
             <div class="Option2">
                 <label for="startTime">Filter by Start Time</label>
                 <input for="startTime" type="datetime-local" id="startTime" name="startTime" required>
@@ -43,18 +44,18 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.StartTime</td>
-                <td>@item.EndTime</td>
-                <td>@item.Region</td>
-                <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
-                <td>@(char.ToUpper(item.Status[0]) + item.Status.Substring(1))</td>
-                <td>
-                    <a asp-action="ViewPostDetails" asp-controller="Home"
-                       asp-route-id="@item.FormID">View</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    <td>@item.Region</td>
+                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                    <td>@(char.ToUpper(item.Status[0]) + item.Status.Substring(1))</td>
+                    <td>
+                        <a asp-action="ViewPostDetails" asp-controller="Home"
+                           asp-route-id="@item.FormID">View</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

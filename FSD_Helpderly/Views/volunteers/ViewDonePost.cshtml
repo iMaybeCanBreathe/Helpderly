@@ -9,6 +9,7 @@
         <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
     </head>
     <div class="table-responsive">
+        <h1>List of Done Request</h1>
         <br />
         <table class="table-striped table-bordered content-table">
             <thead class="header">
@@ -25,23 +26,23 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.MobileNumber</td>
-                    <td>@item.StartTime</td>
-                    <td>@item.EndTime</td>
-                    <td>@item.Location</td>
-                    <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
-                    @if (Context.Session.GetString("Role") == "Volunteer")
-                    {
-                        <td>
-                            <a asp-action="SetPostOngoing" asp-controller="Volunteer"
-                                asp-route-formId="@item.FormID">
-                                Set to Ongoing
-                            </a>
-                        </td>
-                    }
-                </tr>
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.MobileNumber</td>
+                        <td>@item.StartTime</td>
+                        <td>@item.EndTime</td>
+                        <td>@item.Location</td>
+                        <td>@item.CurrentQuantityVolunteer / @item.QuantityVolunteer</td>
+                        @if (Context.Session.GetString("Role") == "Volunteer")
+                        {
+                            <td>
+                                <a asp-action="SetPostOngoing" asp-controller="Volunteer"
+                                   asp-route-formId="@item.FormID">
+                                    Set to Ongoing
+                                </a>
+                            </td>
+                        }
+                    </tr>
                 }
             </tbody>
         </table>
