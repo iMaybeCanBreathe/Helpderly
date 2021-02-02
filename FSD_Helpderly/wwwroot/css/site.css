@@ -6,9 +6,7 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
     font-size: xx-large;
-    background: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #f9a825, #ff5722);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
 }
 
 /* Provide sufficient contrast against white background */
