@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DateTime = System.DateTime;
-using SendGrid;
 using SendGrid.Helpers.Mail;
 
 namespace FSD_Helpderly.DAL
@@ -31,7 +30,7 @@ namespace FSD_Helpderly.DAL
         /*******************************/
 
         //Parameters: email
-        //Returns: A dictionary with the keys: [firstName, lastName, password]
+        //Returns: A dictionary with the keys: [volunteerName, nationality, password, telNo, forms]
         async public Task<Dictionary<string, object>> GetVolunteer(string email)
         {
             Dictionary<string, object> volunteer = new Dictionary<string, object>();
@@ -612,12 +611,43 @@ namespace FSD_Helpderly.DAL
         {
             AddFormToVolunteer(email, formId);
             AddVolunteerToForm(email, formId);
+            SendEmailNotification(formId, email);
         }
 
         public void VolunteerCancelForm(string email, string formId)
         {
             RemoveFormFromVolunteer(email, formId);
             RemoveVolunteerFromForm(email, formId);
+        }
+
+        async private void SendEmailNotification(string formId, string helperEmail)
+        {
+            //get helper details
+            Dictionary<string, object> volunteer = await GetVolunteer(helperEmail);
+            string volName = (string)volunteer["volunteerName"];
+            string volTelNo = (string)volunteer["telNo"];
+            string volPicLink = (string)volunteer["picture"];
+
+            //get receipient email from form id
+            ElderlyPost form = await GetForm(formId);
+            string receipient = form.Email;
+            string desc = form.Description;
+
+            //send email notification
+            var sgApiKey = "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"; //Yes, this is super insecure. But I have no other choice. 
+            var sendGridClient = new SendGridClient(sgApiKey);
+            var from = new EmailAddress("helpderly@gmail.com", "Helpderly");
+            var subject = "*Help*derly is on the way!";
+            var to = new EmailAddress(receipient);
+            var plainTextContent = "Your Helpderly request for \"" + desc + "\" has been accepted by " + volName + ". ";
+            var htmlContent = "Your Helpderly request for <strong>\"" + desc + "\"</strong> has been accepted by <strong>" + volName + "</strong><br/><br/>" +
+                "His/her details are as follows: <br/><br/>" +
+                "<img src=\"" + volPicLink + "\" alt=\"Volunteer Picture\" style=\"width: 200px\"><br/><br/>" +
+                "Name: <strong>" + volName + "</strong><br/>" +
+                "Mobile Number: <strong>" + volTelNo + "</strong><br/>" +
+                "Email: <strong>" + helperEmail + "</strong><br/>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await sendGridClient.SendEmailAsync(msg);
         }
     }
 }

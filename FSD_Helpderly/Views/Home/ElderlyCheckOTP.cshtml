@@ -17,14 +17,14 @@
 </head>
 
 <div class="login-form">
-    <h1 class="PageTitle">Enter OTP</h1>
+    <h1 class="PageTitle">Check your email for the OTP!</h1>
 
     <hr />
     <form asp-action="ElderlyCheckOTP" method="post">
         <fieldset class="FormContent">
             <div class="form-group row">
                 <div class="col-sm-auto col-md-12">
-                    <input asp-for="EmailAddress" placeholder="Enter OTP" class="form-control" readonly />
+                    <input asp-for="EmailAddress" placeholder="Email" class="form-control" readonly />
                     <span asp-validation-for="EmailAddress" class="text-danger"></span>
                 </div>
             </div>
