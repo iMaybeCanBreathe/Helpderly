@@ -645,7 +645,8 @@ namespace FSD_Helpderly.DAL
                 "<img src=\"" + volPicLink + "\" alt=\"Volunteer Picture\" style=\"width: 200px\"><br/><br/>" +
                 "Name: <strong>" + volName + "</strong><br/>" +
                 "Mobile Number: <strong>" + volTelNo + "</strong><br/>" +
-                "Email: <strong>" + helperEmail + "</strong><br/>";
+                "Email: <strong>" + helperEmail + "</strong><br/><br/>" +
+                "He/she will contact you one day before the request to confirm the details with you. ";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await sendGridClient.SendEmailAsync(msg);
         }
