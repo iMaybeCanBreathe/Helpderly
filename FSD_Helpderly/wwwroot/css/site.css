@@ -2,9 +2,11 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    font-size: xx-large;
+
 }
 
 /* Provide sufficient contrast against white background */
@@ -89,4 +91,9 @@ body {
 button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
+}
+
+.container{
+    font-weight: 600;
+    color: black;
 }
