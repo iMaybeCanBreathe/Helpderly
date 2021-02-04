@@ -44,7 +44,7 @@ namespace FSD_Helpderly.Controllers
                 if (dbPassword == "")
                 {
                     //Add volunteer record to database
-                    fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName);
+                    fDal.AddVolunteer(register.Email, register.Nationality, register.Password, register.TelNo, register.VolunteerName, register.Picture);
                     TempData["Message"] = "Your Account have been successfully created!";
                     ModelState.Clear();
                     return View("../Register/Index");

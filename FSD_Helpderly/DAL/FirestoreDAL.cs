@@ -75,7 +75,7 @@ namespace FSD_Helpderly.DAL
             return formIds;
         }
 
-        async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName)
+        async public void AddVolunteer(string email, string Nationality, string password, string TelNo, string VolunteerName, string PicURL)
         {
             DocumentReference doc = db.Collection("users").Document(email);
             DocumentSnapshot snapshot = await doc.GetSnapshotAsync();
@@ -94,7 +94,8 @@ namespace FSD_Helpderly.DAL
                 {"nationality", Nationality},
                 {"telNo", TelNo},
                 {"password", password},
-                {"forms", forms }
+                {"forms", forms },
+                {"picture", PicURL},
             };
 
                 await doc.SetAsync(volunteer);

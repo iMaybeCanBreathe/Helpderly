@@ -27,5 +27,8 @@ namespace FSD_Helpderly.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
+        [Display(Name = "Picture URL")]
+        public string Picture { get; set; }
     }
 }
